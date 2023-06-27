@@ -1,0 +1,8 @@
+.sidebackground {
+    background: linear-gradient(180.02deg, rgba(0, 239, 96, 0.81) 0.01%, rgba(36, 66, 171, 0.428023) 115.05%, rgba(12, 33, 109, 0) 143.07%);
+    background-blend-mode: soft-light;
+    background-size: cover;
+    background-position: center;
+
+    /* url(../../images/karl-fredrickson-JRsZWmRd_Ws-unsplash.jpg),  */
+}
