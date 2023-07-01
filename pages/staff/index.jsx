@@ -1,10 +1,8 @@
 import Head from "next/head";
-import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
-
+import { PlusIcon } from "lucide-react";
+import Cookies from "cookies";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { columns } from "@/components/tables/membersTableColumns";
+import { columns } from "@/components/tables/staffTableColumns";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/tables/DataTable";
 import { useRouter } from "next/router";
@@ -12,27 +10,10 @@ import { Fragment } from "react";
 
 export const metadata = {
   title: "Staff",
-  description: "Example dashboard app using the components.",
+  description: "Staff index page",
 };
 
-const DUMMY_DATA = [
-  {
-    id: 1,
-    name: "Isaac Zally, Jr",
-    email: "izallyjr@gmail.com",
-    phone: "0880339614",
-    address: "R. C. Lawson, Oldest Congo Town",
-  },
-  {
-    id: 2,
-    name: "Rose Zally",
-    email: "rosezally@gmail.com",
-    phone: "0880339614",
-    address: "R. C. Lawson, Oldest Congo Town",
-  },
-];
-
-export default function DashboardPage() {
+export default function DashboardPage({ list }) {
   const router = useRouter();
 
   function onNewStaffClickHandler() {
@@ -48,79 +29,67 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Staff</h2>
           </div>
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Staff
-                    </CardTitle>
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">100</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Male
-                    </CardTitle>
-                    <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">45</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Female
-                    </CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">100</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Active staff
-                    </CardTitle>
-                    <Activity className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">10</div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Button
-                onClick={onNewStaffClickHandler}
-                className="bg-black text-white"
-                size="sm"
-              >
-                New Staff
-              </Button>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-12">
-                  <CardHeader>
-                    <CardTitle>Overview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pl-3">
-                    <DataTable columns={columns} data={DUMMY_DATA} />
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+          <Button
+            onClick={onNewStaffClickHandler}
+            className="bg-black text-white"
+            size="sm"
+          >
+            New Staff
+            <PlusIcon className="h-4 ml-2 w-4 text-muted-foreground font-bold" />
+          </Button>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+            <Card className="col-span-12">
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-3">
+                <DataTable columns={columns} data={list} />
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </Fragment>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const cookies = new Cookies(req, res);
+  const accessToken = cookies.get("access");
+  const refreshToken = cookies.get("refresh");
+
+  if (!accessToken && !refreshToken) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  if (refreshToken) {
+  }
+
+  const headers = new Headers();
+  headers.append("Content-type", "application/json");
+  headers.append("Authorization", `Bearer ${accessToken}`);
+  const response = await fetch("http://localhost/tracksapi/staff", {
+    headers,
+  });
+
+  if (!response.ok) {
+    return {
+      props: {
+        list: [],
+      },
+    };
+  }
+
+  const responseData = await response.json();
+
+  return {
+    props: {
+      list: responseData,
+    },
+  };
 }

@@ -19,10 +19,26 @@ export default function ProfileForm(props) {
     >
       <div className="w-full md:flex md:space-x-2">
         <div className="md:w-6/12 mb-2">
-          <label htmlFor="" className="mb-2">
+          <label htmlFor="staffid" className="mb-2">
+            Staff ID
+          </label>
+          <Input
+            type="text"
+            id="staffid"
+            className="mt-2 w-full"
+            placeholder="Staff ID"
+          />
+        </div>
+        <div className="md:w-6/12 mb-2">
+          <label htmlFor="firstName" className="mb-2">
             First name
           </label>
-          <Input type="text" className="mt-2 w-full" placeholder="First Name" />
+          <Input
+            type="text"
+            id="firstName"
+            className="mt-2 w-full"
+            placeholder="First Name"
+          />
         </div>
         <div className="md:w-6/12 mb-2">
           <label htmlFor="" className="mb-2">
@@ -44,43 +60,43 @@ export default function ProfileForm(props) {
         </div>
         <div className="md:w-6/12 mb-2">
           <label htmlFor="" className="mb-2">
-            Gender name
+            Date of birth
           </label>
-          <Select className="bg-dark mt-2 w-full">
-            <SelectTrigger className="mt-2 ">
-              <SelectValue placeholder="Theme" />
-            </SelectTrigger>
-            <SelectContent className="bg-white">
-              <SelectItem
-                className="text-black hover:bg-slate-400 bg-white"
-                value="Male"
-              >
-                Male
-              </SelectItem>
-              <SelectItem
-                className="text-black hover:bg-slate-400 bg-white"
-                value="Female"
-              >
-                Female
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <Input type="date" className="mt-2 w-full" placeholder="Last Name" />
         </div>
       </div>
       <div className="w-full md:flex md:space-x-2">
         <div className="md:w-6/12 mb-2">
           <label htmlFor="" className="mb-2">
-            Date of birth
-          </label>
-          <Input type="date" className="mt-2 w-full" placeholder="Last Name" />
-        </div>
-        <div className="md:w-6/12 mb-2">
-          <label htmlFor="" className="mb-2">
-            Marital Status
+            Position
           </label>
           <Select className="bg-dark mt-2 w-full">
             <SelectTrigger className="mt-2 ">
-              <SelectValue placeholder="Marital Status" />
+              <SelectValue placeholder="Position" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value="Single"
+              >
+                Software Developer
+              </SelectItem>
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value="Married"
+              >
+                Human Resource Officer
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="md:w-6/12 mb-2">
+          <label htmlFor="" className="mb-2">
+            Supervisor
+          </label>
+          <Select className="bg-dark mt-2 w-full">
+            <SelectTrigger className="mt-2 ">
+              <SelectValue placeholder="Select staff supervisor" />
             </SelectTrigger>
             <SelectContent className="bg-white">
               <SelectItem

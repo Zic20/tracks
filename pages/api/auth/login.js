@@ -1,5 +1,4 @@
-import { headers } from "next/dist/client/components/headers";
-
+import Cookies from "cookies";
 async function handler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
@@ -12,8 +11,19 @@ async function handler(req, res) {
       body: data,
     });
 
-    const responseData = await result.json();
+    if (!result.ok) {
+      res.status(result.status).json({ message: result.statusText });
+      return;
+    }
 
+    const cookies = new Cookies(req, res);
+    const cookieData = result.headers.getSetCookie();
+    const accessToken = cookieData[0].toString().split("=")[1];
+    const refreshToken = cookieData[1].toString().split("=")[1];
+
+    cookies.set("access", accessToken);
+    cookies.set("refresh", refreshToken);
+    const responseData = await result.json();
     res.status(result.status).json(responseData);
   }
 }

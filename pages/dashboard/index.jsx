@@ -1,5 +1,7 @@
 import Head from "next/head";
 import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 
 import {
   Card,
@@ -13,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecentActivities from "@/components/RecentActivities";
 import { Overview } from "@/components/Overview";
 import { Fragment } from "react";
+import authContext from "@/store/auth-context";
+import Cookies from "cookies";
 
 export const metadata = {
   title: "Dashboard",
@@ -21,7 +25,7 @@ export const metadata = {
 
 export default function DashboardPage() {
   return (
-    <Fragment>
+    <>
       <Head>
         <title>Dashboard</title>
       </Head>
@@ -108,6 +112,24 @@ export default function DashboardPage() {
           </Tabs>
         </div>
       </div>
-    </Fragment>
+    </>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const cookies = new Cookies(req, res);
+  const accessToken = cookies.get("access");
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

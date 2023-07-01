@@ -1,7 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import classes from "./login.module.css";
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect, useContext } from "react";
+import authContext from "@/store/auth-context";
+import { useRouter } from "next/router";
+import cookieCutter from "cookie-cutter";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -36,6 +39,8 @@ function Login() {
     isValid: null,
   });
 
+  const router = useRouter();
+
   useEffect(() => {
     const identifier = setTimeout(() => {
       setFormIsValid(emailState.isValid && passwordState.isValid);
@@ -45,7 +50,6 @@ function Login() {
       clearTimeout(identifier);
     };
   }, [emailState.isValid, passwordState.isValid]);
-
   function onEmailChangeHandler(event) {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
   }
@@ -57,7 +61,7 @@ function Login() {
   function onPasswordChangeHandler(event) {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
   }
-  function onPasswordBlurHandler(event) {
+  function onPasswordBlurHandler() {
     dispatchPassword({ type: "BLUR" });
   }
 
@@ -71,8 +75,12 @@ function Login() {
       }),
     });
 
-    const responseData = await response.json();
-    console.log(responseData);
+    if (response.ok) {
+      const responseData = await response.json();
+      cookieCutter.set("access", responseData["access_token"]);
+      cookieCutter.set("refresh", responseData["refresh_token"]);
+      router.push("/dashboard");
+    }
   }
 
   return (
@@ -80,9 +88,8 @@ function Login() {
       <div className={classes.sidebackground + " w-1/3 pl-10 pt-10 relative"}>
         <h1 className="text-2xl font-bold font-monospace">TRACKS</h1>
         <p className="font-bold absolute top-52 text-3xl">
-          {
-            "Log in to your account to easily track your work hours and improve your productivity."
-          }
+          Log in to your account to easily track your work hours and improve
+          your productivity.
         </p>
       </div>
       <div className="bg-white text-left w-2/3 p-20 pt-20 text-black">
