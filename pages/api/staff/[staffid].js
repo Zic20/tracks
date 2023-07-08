@@ -1,7 +1,8 @@
 import Cookies from "cookies";
 
 async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "PATCH") {
+    const { staffid } = req.query;
     const cookies = new Cookies(req, res);
     const accessToken = cookies.get("access");
 
@@ -9,12 +10,14 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch("http://localhost/tracksapi/staff", {
-      method: "POST",
-      mode: "no-cors",
-      headers,
-      body: req.body,
-    });
+    const response = await fetch(
+      `http://localhost/tracksapi/staff/${staffid}`,
+      {
+        method: "PATCH",
+        headers,
+        body: req.body,
+      }
+    );
 
     if (!response.ok) {
       res.status(response.status).json(await response.json());
@@ -23,6 +26,7 @@ async function handler(req, res) {
 
     const responseData = await response.json();
     res.status(response.status).json(responseData);
+  } else if (req.method === "GET") {
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

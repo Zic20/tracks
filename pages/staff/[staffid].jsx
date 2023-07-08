@@ -1,18 +1,17 @@
 import Head from "next/head";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { columns } from "@/components/tables/membersDonationsColumns";
-import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/tables/DataTable";
 import { Fragment } from "react";
 import ProfileForm from "@/components/forms/ProfileForm";
-import { MyAvatar } from "@/components/utilities/MyAvatar";
+import Cookies from "cookies";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 export const metadata = {
-  title: "Members",
-  description: "Example dashboard app using the components.",
+  title: "Staff",
+  description: "Details about a staff",
 };
 
 const DUMMY_DATA = [
@@ -42,7 +41,33 @@ const DUMMY_DATA = [
   },
 ];
 
-export default function MemberProfilePage() {
+export default function MemberProfilePage({ stafflist, staff }) {
+  const { toast } = useToast();
+  async function onFormSubmitHandler(data) {
+    const response = await fetch(`/api/staff/${staff.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const res = await response.json();
+      toast({
+        title: "Process failed",
+        // description: "Update failed",
+        description: res.message,
+        className: "bg-red-500 text-white font-bold",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      return;
+    }
+
+    toast({
+      variant: "success",
+      title: "Success",
+      description: "Staff record update successful",
+      className: "bg-white text-black",
+    });
+  }
   return (
     <Fragment>
       <Head>
@@ -55,9 +80,6 @@ export default function MemberProfilePage() {
               <TabsTrigger className="w-3/12 focus:bg-white" value="profile">
                 Profile
               </TabsTrigger>
-              <TabsTrigger className="w-3/12 focus:bg-white" value="donations">
-                Donations
-              </TabsTrigger>
               <TabsTrigger className="w-3/12 focus:bg-white" value="security">
                 Security
               </TabsTrigger>
@@ -69,29 +91,18 @@ export default function MemberProfilePage() {
                     <CardTitle>Profile</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-3 md:flex space-x-2">
-                    <Card className="text-center md:w-1/3 p-5 h-4/6">
-                      <CardContent className="flex flex-col justify-center align-middle">
-                        <MyAvatar
-                          image={"https://github.com/shadcn.png"}
-                          alt={"userprofile"}
-                          fallback={"Profile"}
-                          className={"w-52 h-2/5"}
-                        />
-                        <p className="my-4">Upload your profile image</p>
-                        <Button
-                          variant="default"
-                          className="text-white bg-black"
-                        >
-                          Save Changes
-                        </Button>
-                      </CardContent>
-                    </Card>
-                    <ProfileForm className="col-span-2" />
+                    <ProfileForm
+                      className="col-span-2"
+                      method="UPDATE"
+                      stafflist={stafflist}
+                      staff={staff}
+                      onSubmit={onFormSubmitHandler}
+                    />
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
-            <TabsContent value="donations" className="space-y-4">
+            <TabsContent value="security" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-12">
                   <CardHeader>
@@ -112,4 +123,57 @@ export default function MemberProfilePage() {
       </div>
     </Fragment>
   );
+}
+
+export async function getServerSideProps({ req, res, params }) {
+  const staffid = params.staffid;
+  const cookies = new Cookies(req, res);
+  const accessToken = cookies.get("access");
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const response = await fetch("http://localhost/tracksapi/staff", {
+    mode: "no-cors",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const staffInfoResponse = await fetch(
+    `http://localhost/tracksapi/staff/${staffid}`,
+    {
+      mode: "no-cors",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!staffInfoResponse.ok) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const [stafflist, staff] = await Promise.all([
+    response.json(),
+    staffInfoResponse.json(),
+  ]);
+
+  return {
+    props: {
+      stafflist,
+      staff,
+    },
+  };
 }

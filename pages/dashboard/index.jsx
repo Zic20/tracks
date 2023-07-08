@@ -14,8 +14,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecentActivities from "@/components/RecentActivities";
 import { Overview } from "@/components/Overview";
-import { Fragment } from "react";
-import authContext from "@/store/auth-context";
 import Cookies from "cookies";
 
 export const metadata = {
