@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import authContext from "./auth-context";
+"use-client";
 import dayjs from "dayjs";
-import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import { useState } from "react";
+import authContext from "./auth-context";
 
 const AuthProvider = (props) => {
   const accessToken = retrieveStoredToken();
@@ -97,7 +98,7 @@ export async function getNewToken(token) {
   let userData = { token };
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch("/api/auth/refresh", {
     method: "POST",
     headers: headers,
     body: JSON.stringify(userData),

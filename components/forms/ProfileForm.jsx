@@ -67,14 +67,13 @@ export default function ProfileForm(props) {
     setLastName(event.target.value);
   }
   function onDateOfBirthChangeHandler(event) {
-    console.log(event.target.value);
     setDateOfBirth(event.target.value);
   }
   function onPositionChangeHandler(value) {
     setPosition(value);
   }
   function onSupervisorChangeHandler(value) {
-    setSupervisor(value);
+    setSupervisor(+value);
   }
   function onEmailChangeHandler(event) {
     setEmail(event.target.value);
@@ -130,7 +129,7 @@ export default function ProfileForm(props) {
             placeholder="Staff ID"
             onChange={onStaffIDChangeHandler}
             disabled={props.method === "UPDATE"}
-            defaultValue={props.staff.StaffID ?? ""}
+            defaultValue={props.staff.StaffID && props.staff.StaffID}
           />
         </div>
         <div className="md:w-6/12 mb-2">
@@ -220,7 +219,7 @@ export default function ProfileForm(props) {
                   <SelectItem
                     key={staff.id}
                     className="text-black hover:bg-slate-400 bg-white"
-                    value={staff.id}
+                    value={`${staff.id}`}
                   >
                     {`${staff.FirstName} ${staff.MiddleName ?? ""} ${
                       staff.LastName

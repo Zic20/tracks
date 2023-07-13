@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/sheet";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -19,89 +18,45 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import ActivityForm from "@/components/forms/ActivityForm";
+import GoalsForm from "../forms/GoalsForm";
 
-import { convertTime } from "@/modules/timecalculation";
 export default function activitiesColumns({
-  activitytypes,
-  agencies,
   onSubmitHandler,
   onDeleteHandler,
 }) {
   return [
     {
-      id: "Date",
-      accessorKey: "Date",
-      header: ({ column }) => {
-        return (
-          <div className="text-left p-0">
-            Date
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-            >
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        );
-      },
-    },
-    {
-      id: "Activity",
-      accessorKey: "Activity",
-      header: "Task",
+      id: "Goal",
+      accessorKey: "Goal",
+      header: "Goal",
     },
 
     {
-      id: "StartTime",
-      accessorKey: "StartTime",
-      header: "Start Time",
+      id: "StartDate",
+      accessorKey: "StartDate",
+      header: "Start Date",
       cell: ({ row }) => {
-        const activity = row.original;
-        return <p>{activity.StartTime}</p>;
+        const goal = row.original;
+        return <p>{goal.StartDate}</p>;
       },
     },
 
     {
-      id: "EndTime",
-      accessorKey: "EndTime",
-      header: "End Time",
+      id: "EndDate",
+      accessorKey: "EndDate",
+      header: "End Date",
       cell: ({ row }) => {
-        const activity = row.original;
-        return <p>{activity.EndTime}</p>;
-        // return <p>{convertTime(activity.EndTime)}</p>;
-      },
-    },
-    {
-      id: "TimeInput",
-      accessorKey: "TimeInput",
-      header: "Time Input",
-      cell: ({ row }) => {
-        const activity = row.original;
-        return <p>{activity.TimeInput}</p>;
-      },
-    },
-    {
-      id: "agencies_id",
-      accessorKey: "agencies_id",
-      header: "Location",
-      cell: ({ row }) => {
-        const location = agencies.filter(
-          (agency) => +agency.id === +row.original.agencies_id
-        );
-
-        return <p>{location[0] ? location[0].Name : ""}</p>;
+        const goal = row.original;
+        return <p>{goal.EndDate}</p>;
       },
     },
     {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const activity = row.original;
-        function deleteActivity() {
-          onDeleteHandler(activity.id);
+        const goal = row.original;
+        function deleteGoal() {
+          onDeleteHandler(goal.id);
         }
         return (
           <div className="flex gap-2">
@@ -114,12 +69,10 @@ export default function activitiesColumns({
                   <SheetTitle>Edit task</SheetTitle>
                 </SheetHeader>
                 <SheetDescription></SheetDescription>
-                <ActivityForm
-                  activitytypes={activitytypes}
-                  agencies={agencies}
-                  onSubmit={onSubmitHandler}
-                  activity={activity}
+                <GoalsForm
                   method="PATCH"
+                  goal={goal}
+                  onSubmit={onSubmitHandler}
                 />
               </SheetContent>
             </Sheet>
@@ -133,7 +86,7 @@ export default function activitiesColumns({
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will permanently delete
-                    this task.
+                    this goal.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -141,7 +94,7 @@ export default function activitiesColumns({
                     Cancel
                   </AlertDialogCancel>
 
-                  <Button onClick={deleteActivity} className="bg-green-300">
+                  <Button onClick={deleteGoal} className="bg-green-300">
                     Continue
                   </Button>
                 </AlertDialogFooter>

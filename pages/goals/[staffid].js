@@ -11,64 +11,63 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import ActivityForm from "@/components/forms/ActivityForm";
-import activitiesColumns from "@/components/tables/activitiesColumns";
+import goalsColumns from "@/components/tables/goalsColumns";
 import { convertTimeToString } from "@/modules/timecalculation";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { CheckCircleIcon } from "lucide-react";
+import GoalsForm from "@/components/forms/GoalsForm";
 export const metadata = {
-  title: "Tasks",
-  description: "Staff tasks",
+  title: "Goals",
+  description: "Staff goals",
 };
 
 const listReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updatedState = state.concat(action.activity);
+    const updatedState = state.concat(action.goal);
     return updatedState;
   }
 
   if (action.type === "UPDATE") {
     const result = state.filter(
-      (existingActivities) => existingActivities.id !== action.id
+      (existingGoals) => existingGoals.id !== action.id
     );
 
-    result.push({ id: action.id, ...action.activity });
+    result.push({ id: action.id, ...action.goal });
     const sortedList = result.sort((a, b) => a.id - b.id);
     return sortedList;
   }
 
   if (action.type === "DELETE") {
     const result = state.filter(
-      (existingActivities) => existingActivities.id !== action.id
+      (existingGoals) => existingGoals.id !== action.id
     );
     const sortedList = result.sort((a, b) => a.id - b.id);
     return sortedList;
   }
 };
-export default function StaffTasksPage({ list, agencies, activitytypes }) {
-  const [activitiesState, dispatchActivities] = useReducer(listReducer, []);
+export default function StaffGoalsPage({ list }) {
+  const [goalsState, dispatchActivities] = useReducer(listReducer, []);
   const { toast } = useToast();
 
   useEffect(() => {
     if (list) {
-      list.forEach((activity) => {
-        activity.TimeInput = convertTimeToString(activity.TimeInput);
-        dispatchActivities({ type: "ADD", activity });
+      list.forEach((goal) => {
+        dispatchActivities({ type: "ADD", goal });
       });
     }
   }, [list]);
   function onSubmitHandler(data, id = null) {
     if (id !== null) {
-      dispatchActivities({ type: "UPDATE", activity: data, id });
+      dispatchActivities({ type: "UPDATE", goal: data, id });
       return;
     }
 
-    dispatchActivities({ type: "ADD", activity });
+    dispatchActivities({ type: "ADD", goal });
   }
 
   async function onDeleteHandler(id) {
-    const response = await fetch(`/api/tasks/delete/${id}`, {
+    const response = await fetch(`/api/goals/delete/${id}`, {
       method: "DELETE",
     });
 
@@ -104,42 +103,36 @@ export default function StaffTasksPage({ list, agencies, activitytypes }) {
     dispatchActivities({ type: "DELETE", id });
   }
 
-  const columns = activitiesColumns({
-    activitytypes,
-    agencies,
+  const columns = goalsColumns({
     onSubmitHandler,
     onDeleteHandler,
   });
   return (
     <Fragment>
       <Head>
-        <title>Tasks</title>
+        <title>Goals</title>
       </Head>
       <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-12 bg-white">
               <CardHeader>
-                <CardTitle>Tasks</CardTitle>
+                <CardTitle>Goals</CardTitle>
               </CardHeader>
               <CardContent className="pl-3">
                 <Sheet className="p-1">
                   <SheetTrigger className="bg-black text-white py-1 px-2 rounded">
-                    New task
+                    New Goal
                   </SheetTrigger>
                   <SheetContent className="px-5">
                     <SheetHeader>
-                      <SheetTitle>Add new task</SheetTitle>
+                      <SheetTitle>Add new goal</SheetTitle>
                     </SheetHeader>
                     <SheetDescription></SheetDescription>
-                    <ActivityForm
-                      activitytypes={activitytypes}
-                      agencies={agencies}
-                      onSubmit={onSubmitHandler}
-                    />
+                    <GoalsForm onSubmit={onSubmitHandler} />
                   </SheetContent>
                 </Sheet>
-                <DataTable columns={columns} data={activitiesState} />
+                <DataTable columns={columns} data={goalsState} />
               </CardContent>
             </Card>
           </div>
@@ -169,45 +162,21 @@ export async function getServerSideProps({ req, res }) {
   const headers = new Headers();
   headers.append("Content-type", "application/json");
   headers.append("Authorization", `Bearer ${accessToken}`);
-  const response = await fetch("http://localhost/tracksapi/activities", {
+  const response = await fetch("http://localhost/tracksapi/goals", {
     headers,
   });
-
-  const agenciesListingReq = await fetch(
-    "http://localhost/tracksapi/agencies",
-    {
-      headers,
-    }
-  );
-
-  const activityTypesListingReq = await fetch(
-    "http://localhost/tracksapi/activitytypes",
-    {
-      headers,
-    }
-  );
-
-  const [activities, agencies, activitytypes] = await Promise.all([
-    response.json(),
-    agenciesListingReq.json(),
-    activityTypesListingReq.json(),
-  ]);
 
   if (!response.ok) {
     return {
       props: {
-        list: [],
-        agencies: agencies.data,
-        activitytypes: activitytypes.data,
+        list: {},
       },
     };
   }
-
+  const goals = await response.json();
   return {
     props: {
-      list: activities.data,
-      agencies: agencies.data,
-      activitytypes: activitytypes.data,
+      list: goals.data,
     },
   };
 }
