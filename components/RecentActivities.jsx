@@ -4,25 +4,25 @@ const DUMMY_ACTIVITIES = [
   {
     id: 1,
     image: "",
-    title: "Choir practice",
+    title: "Complete web app integration from Customer Portal",
     date: "Thursday June 19, 2023",
   },
   {
     id: 2,
     image: "",
-    title: "Choir practice",
+    title: "Present new design to the team",
     date: "Thursday June 19, 2023",
   },
   {
     id: 3,
     image: "",
-    title: "Choir practice",
+    title: "Present demo for new project",
     date: "Thursday June 19, 2023",
   },
   {
     id: 4,
     image: "",
-    title: "Choir practice",
+    title: "Submission of platform to the client",
     date: "Thursday June 19, 2023",
   },
 ];
@@ -38,7 +38,7 @@ const RecentActivities = () => {
           >
             <Avatar className="h-9 w-9">
               <AvatarImage src={activity.image} alt="Avatar" />
-              <AvatarFallback>CP</AvatarFallback>
+              {/* <AvatarFallback></AvatarFallback> */}
             </Avatar>
             <div className="ml-4 space-y-1">
               <p className="text-sm font-medium leading-none">

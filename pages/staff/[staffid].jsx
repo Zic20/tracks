@@ -71,16 +71,16 @@ export default function MemberProfilePage({ stafflist, staff }) {
   return (
     <Fragment>
       <Head>
-        <title>Member Profile</title>
+        <title>Staff Profile</title>
       </Head>
       <div className="flex-col md:flex text-black bg-white min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <Tabs defaultValue="profile" className="space-y-4">
-            <TabsList className="bg-slate-300 md:w-6/12 justify-start space-x-2">
-              <TabsTrigger className="w-3/12 focus:bg-white" value="profile">
+            <TabsList className="bg-slate-300 md:w-3/12 justify-start space-x-2">
+              <TabsTrigger className="w-6/12 focus:bg-white" value="profile">
                 Profile
               </TabsTrigger>
-              <TabsTrigger className="w-3/12 focus:bg-white" value="security">
+              <TabsTrigger className="w-6/12 focus:bg-white" value="security">
                 Security
               </TabsTrigger>
             </TabsList>
@@ -104,16 +104,34 @@ export default function MemberProfilePage({ stafflist, staff }) {
             </TabsContent>
             <TabsContent value="security" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-12">
+                <Card className="col-span-2">
                   <CardHeader>
-                    <CardTitle>Donations</CardTitle>
+                    <CardTitle>Reset password</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-3">
-                    <DataTable
-                      columns={columns}
-                      data={DUMMY_DATA}
-                      filterField="date"
-                    />
+                    <form>
+                      <div className="flex flex-col space-y-4">
+                        <div className="flex flex-col space-y-2">
+                          <label htmlFor="password">New password</label>
+                          <input
+                            className="border p-2 rounded w-full"
+                            type="password"
+                            id="password"
+                          />
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <label htmlFor="password">Confirm password</label>
+                          <input
+                            className="border p-2 rounded w-full"
+                            type="password"
+                            id="confirmpassword"
+                          />
+                        </div>
+                        <button className="rounded bg-black text-white p-2 w-full">
+                          Reset password
+                        </button>
+                      </div>
+                    </form>
                   </CardContent>
                 </Card>
               </div>

@@ -1,11 +1,13 @@
-import { retrieveStoredToken } from "@/store/AuthProvider";
-import jwtDecode from "jwt-decode";
+import { retrieveTokenData } from "@/store/AuthProvider";
 import AdminNav from "./AdminNav";
 import StaffNav from "./StaffNav";
 
 export function MainNav({ className }) {
-  const accessToken = retrieveStoredToken();
-  const { usertype, name, sub, uniqueid } = jwtDecode(accessToken);
+  const tokenData = retrieveTokenData();
+  if (tokenData === null) {
+    return null;
+  }
+  const { usertype, name, sub, uniqueid } = tokenData;
   return (
     <>
       {usertype === "Staff" && (

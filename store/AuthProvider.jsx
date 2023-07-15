@@ -67,6 +67,23 @@ export function retrieveStoredToken() {
   return token;
 }
 
+export function retrieveTokenData() {
+  const token = Cookies.get("access");
+  if (!token) {
+    return null;
+  }
+  if (token === "undefined") {
+    return null;
+  }
+
+  let tokenData = jwt_decode(token);
+  const isExpired = dayjs.unix(tokenData.exp).diff(dayjs()) < 1;
+  if (isExpired) {
+    return null;
+  }
+  return tokenData;
+}
+
 export function retrieveRefreshToken() {
   const refreshToken = Cookies.get("refresh");
   if (!refreshToken) {
