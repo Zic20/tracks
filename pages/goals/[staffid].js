@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { CheckCircleIcon } from "lucide-react";
 import GoalsForm from "@/components/forms/GoalsForm";
+import SideSheet from "@/components/SideSheet";
 export const metadata = {
   title: "Goals",
   description: "Staff goals",
@@ -120,18 +121,9 @@ export default function StaffGoalsPage({ list }) {
                 <CardTitle>Goals</CardTitle>
               </CardHeader>
               <CardContent className="pl-3">
-                <Sheet className="p-1">
-                  <SheetTrigger className="bg-black text-white py-1 px-2 rounded">
-                    New Goal
-                  </SheetTrigger>
-                  <SheetContent className="px-5">
-                    <SheetHeader>
-                      <SheetTitle>Add new goal</SheetTitle>
-                    </SheetHeader>
-                    <SheetDescription></SheetDescription>
-                    <GoalsForm onSubmit={onSubmitHandler} />
-                  </SheetContent>
-                </Sheet>
+                <SideSheet triggerTitle="New Goal" title="Add new goal">
+                  <GoalsForm onSubmit={onSubmitHandler} />
+                </SideSheet>
                 <DataTable columns={columns} data={goalsState} />
               </CardContent>
             </Card>

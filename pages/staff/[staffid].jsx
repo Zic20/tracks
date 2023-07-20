@@ -1,8 +1,6 @@
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { columns } from "@/components/tables/membersDonationsColumns";
-import { DataTable } from "@/components/tables/DataTable";
 import { Fragment } from "react";
 import ProfileForm from "@/components/forms/ProfileForm";
 import Cookies from "cookies";
@@ -13,33 +11,6 @@ export const metadata = {
   title: "Staff",
   description: "Details about a staff",
 };
-
-const DUMMY_DATA = [
-  {
-    id: 1,
-    date: "June 17, 2023",
-    reference: "06172023TH12",
-    amount: 2000,
-    fund: "Tithe",
-    status: "Success",
-  },
-  {
-    id: 2,
-    date: "January 17, 2023",
-    reference: "06172023TH12",
-    amount: 2000,
-    fund: "Tithe",
-    status: "Success",
-  },
-  {
-    id: 3,
-    date: "December 17, 2023",
-    reference: "06172023TH12",
-    amount: 2000,
-    fund: "Tithe",
-    status: "Success",
-  },
-];
 
 export default function MemberProfilePage({ stafflist, staff }) {
   const { toast } = useToast();
@@ -53,7 +24,6 @@ export default function MemberProfilePage({ stafflist, staff }) {
       const res = await response.json();
       toast({
         title: "Process failed",
-        // description: "Update failed",
         description: res.message,
         className: "bg-red-500 text-white font-bold",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
