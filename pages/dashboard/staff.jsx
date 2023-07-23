@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
+import { Activity, ActivityIcon, Users } from "lucide-react";
 
 import {
   Card,
@@ -18,6 +18,21 @@ export const metadata = {
   title: "Dashboard",
   description: "Example dashboard app using the components.",
 };
+
+const PENDING_TASKS = [
+  {
+    id: 1,
+    title: "Complete web app integration from Customer Portal",
+    date: "2 days ago",
+    deadline: "Tomorrow",
+  },
+  {
+    id: 2,
+    title: "Present new design to the team",
+    date: "3 days ago",
+    deadline: "Today",
+  },
+];
 
 export default function DashboardPage() {
   return (
@@ -39,45 +54,43 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Total Revenue
+                      Ongoing Projects
                     </CardTitle>
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    <ActivityIcon className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
+                    <div className="text-2xl font-bold">2</div>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Total Expense
-                    </CardTitle>
-                    <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">$2,350.00</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Members
-                    </CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">100</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Staff on payroll
+                      Completed Projects
                     </CardTitle>
                     <Activity className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">10</div>
+                    <div className="text-2xl font-bold">5</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Teams</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">2</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Activities
+                    </CardTitle>
+                    <Activity className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">2</div>
                   </CardContent>
                 </Card>
               </div>
@@ -94,13 +107,13 @@ export default function DashboardPage() {
 
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Upcoming Events</CardTitle>
+                    <CardTitle>Pending Tasks</CardTitle>
                     <CardDescription>
-                      You have 4 upcoming events.
+                      You have {PENDING_TASKS.length} pending tasks.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <RecentActivities />
+                    <RecentActivities activities={PENDING_TASKS} />
                   </CardContent>
                 </Card>
               </div>

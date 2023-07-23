@@ -129,7 +129,7 @@ export default function ProfileForm(props) {
             placeholder="Staff ID"
             onChange={onStaffIDChangeHandler}
             disabled={props.method === "UPDATE"}
-            defaultValue={props.staff.StaffID && props.staff.StaffID}
+            defaultValue={props.staff?.StaffID}
           />
         </div>
         <div className="md:w-6/12 mb-2">
@@ -142,7 +142,7 @@ export default function ProfileForm(props) {
             className="mt-2 w-full"
             placeholder="First Name"
             onChange={onFirstNameChangeHandler}
-            defaultValue={props.staff.FirstName ?? ""}
+            defaultValue={props.staff?.FirstName}
           />
         </div>
         <div className="md:w-6/12 mb-2">
@@ -154,7 +154,7 @@ export default function ProfileForm(props) {
             className="mt-2 w-full"
             placeholder="Middle Name"
             onChange={onMiddleNameChangeHandler}
-            defaultValue={props.staff.MiddleName ?? ""}
+            defaultValue={props.staff?.MiddleName}
           />
         </div>
       </div>
@@ -168,7 +168,7 @@ export default function ProfileForm(props) {
             className="mt-2 w-full"
             placeholder="Last Name"
             onChange={onLastNameChangeHandler}
-            defaultValue={props.staff.LastName ?? ""}
+            defaultValue={props.staff?.LastName}
           />
         </div>
       </div>
@@ -180,7 +180,7 @@ export default function ProfileForm(props) {
           <Select
             className="bg-dark mt-2 w-full"
             onValueChange={onPositionChangeHandler}
-            defaultValue={props.staff.Position ?? ""}
+            defaultValue={props.staff?.Position}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Position" />
@@ -208,7 +208,7 @@ export default function ProfileForm(props) {
           <Select
             onValueChange={onSupervisorChangeHandler}
             className="bg-dark mt-2 w-full"
-            defaultValue={props.staff.Supervisor ?? ""}
+            defaultValue={props.staff?.Supervisor}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Select staff supervisor" />
@@ -241,7 +241,7 @@ export default function ProfileForm(props) {
             className="mt-2 w-full"
             placeholder="Email"
             onChange={onEmailChangeHandler}
-            defaultValue={props.staff.Email ?? ""}
+            defaultValue={props.staff?.Email}
           />
         </div>
         <div className="md:w-6/12 mb-2">
@@ -253,7 +253,7 @@ export default function ProfileForm(props) {
             className="mt-2 w-full"
             placeholder="Phone Number"
             onChange={onPhoneNoChangeHandler}
-            defaultValue={props.staff.PhoneNo ?? ""}
+            defaultValue={props.staff?.PhoneNo}
           />
         </div>
       </div>
