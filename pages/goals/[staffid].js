@@ -40,11 +40,7 @@ const listReducer = (state, action) => {
   }
 
   if (action.type === "DELETE") {
-    const result = state.filter(
-      (existingGoals) => existingGoals.id !== action.id
-    );
-    const sortedList = result.sort((a, b) => a.id - b.id);
-    return sortedList;
+    return state.filter((existingGoals) => existingGoals.id !== action.id);
   }
 };
 export default function StaffGoalsPage({ list }) {
@@ -161,7 +157,7 @@ export async function getServerSideProps({ req, res }) {
   if (!response.ok) {
     return {
       props: {
-        list: {},
+        list: [],
       },
     };
   }

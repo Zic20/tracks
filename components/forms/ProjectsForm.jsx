@@ -154,6 +154,7 @@ export default function ProjectsForm({
             id="name"
             className="mt-2 w-full"
             placeholder="Name"
+            defaultValue={project?.Name}
             onChange={onNameChangeHandler}
           />
         </div>
@@ -165,6 +166,7 @@ export default function ProjectsForm({
             type="date"
             className="mt-2 w-full"
             id="date"
+            defaultValue={project?.StartDate}
             onChange={onStartDateChangeHandler}
           />
         </div>
@@ -178,6 +180,7 @@ export default function ProjectsForm({
             type="date"
             id="deadline"
             className="mt-2 w-full"
+            defaultValue={project?.Deadline}
             onChange={onDeadlineChangeHandler}
           />
         </div>
@@ -188,6 +191,7 @@ export default function ProjectsForm({
           <Select
             className="bg-dark mt-2 w-full"
             onValueChange={onTypeChangleHandler}
+            defaultValue={project?.Type}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Type" />
@@ -217,6 +221,7 @@ export default function ProjectsForm({
           <Select
             onValueChange={onClientChangeHandler}
             className="bg-dark mt-2 w-full"
+            defaultValue={`${project?.Client}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Select project client" />

@@ -3,27 +3,25 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export function MyDialog(props) {
+export function MyDialog({ title, description, children }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">{props.title}</Button>
+        <Button className="bg-black text-white w-1/6" variant="outline">
+          {title}
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] text-black bg-white">
         <DialogHeader>
-          <DialogTitle>{props.title}</DialogTitle>
-          <DialogDescription>{props.description}</DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {props.children}
-        {/* <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
+        {children}
       </DialogContent>
     </Dialog>
   );

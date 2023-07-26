@@ -89,7 +89,10 @@ export const columns = [
     cell: ({ row }) => {
       const project = row.original;
       return (
-        <Link className="text-blue text-center" href={`/project/${project.id}`}>
+        <Link
+          className="text-blue text-center"
+          href={`/projects/${project.id}`}
+        >
           <EyeIcon />
         </Link>
       );
