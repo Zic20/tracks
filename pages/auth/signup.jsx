@@ -1,43 +1,51 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import classes from "./login.module.css";
+import Image from "next/image";
+import logo from "../../images/Logo.png";
 
 function Signup() {
   return (
-    <div className="flex min-h-screen">
-      <div className={classes.sidebackground + " w-1/3 pl-10 pt-10 relative"}>
-        <h1 className="text-2xl font-bold font-monospace">TRACKS</h1>
-        <p className="text-4xl font-bold absolute top-52">
-          {/* write marketing test here */}
-        </p>
-      </div>
-      <div className="bg-white text-left w-2/3 p-20 pt-10 text-black">
+    <div className="flex min-h-screen justify-center align-middle bg-slate-200">
+      <div className="bg-white shadow-ld w-2/6 p-5 text-center text-black rounded-lg my-auto">
+        <Image
+          src={logo}
+          width="50"
+          height="50"
+          className="rounded-full mx-auto mb-2"
+          alt="logo"
+        />
         <h1 className="text-2xl mb-5 font-bold">Sign up</h1>
         <div className="flex w-full space-x-1.5">
           <input
             type="email"
-            className="border border-black placeholder-black p-3 flex-1 my-5 w-full focus:outline-none"
+            className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
             placeholder="Email"
           />
         </div>
-        <input
-          type="password"
-          className="border border-black placeholder-black p-3 w-full my-5 focus:outline-none"
-          placeholder="Password"
-        />
-        <input
-          type="password"
-          className="border border-black placeholder-black p-3 w-full my-5 focus:outline-none"
-          placeholder="Confirm Password"
-        />
+        <form>
+          <input
+            type="password"
+            className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
+            placeholder="Password"
+          />
+          <input
+            type="password"
+            className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
+            placeholder="Confirm Password"
+          />
 
-        <div className="flex flex-row">
-          <Link className="underline text-blue-600" href={"/auth/requestcode"}>
-            Forgot Password?
-          </Link>
-        </div>
+          <div className="flex flex-row">
+            <Link
+              className="underline text-blue-600"
+              href={"/auth/requestcode"}
+            >
+              Forgot Password?
+            </Link>
+          </div>
 
-        <button className="bg-black text-white p-3 w-full my-5">Sign In</button>
+          <button className="bg-black rounded text-white p-3 w-full my-5">
+            Sign In
+          </button>
+        </form>
 
         <p className="text-center">
           {"Already have an account? "}

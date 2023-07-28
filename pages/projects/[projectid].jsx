@@ -89,10 +89,10 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
               <TabsTrigger className="w-6/12 focus:bg-white" value="profile">
                 Project
               </TabsTrigger>
-              <TabsTrigger className="w-6/12 focus:bg-white" value="security">
+              <TabsTrigger className="w-6/12 focus:bg-white" value="team">
                 Team
               </TabsTrigger>
-              <TabsTrigger className="w-6/12 focus:bg-white" value="security">
+              <TabsTrigger className="w-6/12 focus:bg-white" value="tasks">
                 Tasks
               </TabsTrigger>
             </TabsList>
@@ -114,12 +114,31 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
                 </Card>
               </div>
             </TabsContent>
-            <TabsContent value="security" className="space-y-4">
+            <TabsContent value="team" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-12 lg:grid-cols-7">
                 <Card className="col-span-12">
                   <CardHeader>
                     <CardTitle className="mb-3">Team</CardTitle>
                     <MyDialog title={"New team member"}>
+                      <TeamForm
+                        stafflist={staffList}
+                        project={project.id}
+                        onSubmit={onFormSubmitHandler}
+                      />
+                    </MyDialog>
+                  </CardHeader>
+                  <CardContent className="pl-3">
+                    <DataTable columns={columns} data={teamState} />
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+            <TabsContent value="tasks" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-12 lg:grid-cols-7">
+                <Card className="col-span-12">
+                  <CardHeader>
+                    <CardTitle className="mb-3">Tasks</CardTitle>
+                    <MyDialog title={"New task"}>
                       <TeamForm
                         stafflist={staffList}
                         project={project.id}

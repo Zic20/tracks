@@ -1,10 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import classes from "./login.module.css";
-import { useState, useReducer, useEffect, useContext } from "react";
-import authContext from "@/store/auth-context";
+import { useState, useReducer, useEffect } from "react";
 import { useRouter } from "next/router";
 import cookieCutter from "cookie-cutter";
+import Image from "next/image";
+import logo from "../../images/Logo.png";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -84,28 +83,28 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className={classes.sidebackground + " w-1/3 pl-10 pt-10 relative"}>
-        <h1 className="text-2xl font-bold font-monospace">TRACKS</h1>
-        <p className="font-bold absolute top-52 text-3xl">
-          Log in to your account to easily track your work hours and improve
-          your productivity.
-        </p>
-      </div>
-      <div className="bg-white text-left w-2/3 p-20 pt-20 text-black">
-        <h1 className="text-2xl mb-5 font-bold">Welcome Back</h1>
-        <p className="mb-5 text-gray-600">Sign in to your tracks profile</p>
+    <div className="min-h-screen flex justify-center align-middle bg-slate-200">
+      <div className="bg-white shadow-ld w-2/6 p-5 text-center text-black rounded-lg my-auto">
+        <Image
+          src={logo}
+          width="50"
+          height="100"
+          className="mx-auto rounded-full mb-2"
+          alt="logo"
+        />
+        <h1 className="text-2xl mb-5 font-bold">Welcome Back!</h1>
+        <p className="mb-5 text-gray-600">Please sign in to continue.</p>
 
         <input
           type="text"
-          className="border border-black placeholder-black p-3 w-10/12 my-5 focus:outline-none"
+          className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
           placeholder="Email"
           onChange={onEmailChangeHandler}
           onBlur={onEmailBlurHandler}
         />
         <input
           type="password"
-          className="border border-black placeholder-black p-3 w-10/12 my-5 focus:outline-none"
+          className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
           placeholder="Password"
           onChange={onPasswordChangeHandler}
           onBlur={onPasswordBlurHandler}
@@ -118,7 +117,7 @@ function Login() {
         </div>
 
         <button
-          className="bg-black text-white p-3 w-10/12 my-5"
+          className="bg-black rounded text-white p-3 w-full my-5"
           disabled={!formisValid}
           onClick={loginHandler}
         >

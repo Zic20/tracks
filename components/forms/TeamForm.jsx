@@ -133,15 +133,19 @@ const TeamForm = ({
       onSubmit={onFormSubmitHandler}
     >
       <div className="mb-2">
-        <label htmlFor="Staff">Staff</label>
-        <input
-          type="text"
-          name="Staff"
-          id="Staff"
-          defaultValue={member.StaffName}
-          disabled={true}
-          className="bg-white border border-gray-100 p-2 rounded mt-2 w-full"
-        />
+        {method !== "POST" && (
+          <>
+            <label htmlFor="Staff">Staff</label>
+            <input
+              type="text"
+              name="Staff"
+              id="Staff"
+              defaultValue={member.StaffName}
+              disabled={true}
+              className="bg-white border border-gray-100 p-2 rounded mt-2 w-full"
+            />
+          </>
+        )}
         {method === "POST" && (
           <>
             <label htmlFor="">Staff</label>
