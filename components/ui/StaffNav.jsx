@@ -9,7 +9,7 @@ export default function StaffNav({ className, username, userid, staffid }) {
           className={"flex items-center space-x-4 lg:space-x-6 " + className}
         >
           <Link
-            href="/dashboard"
+            href="/dashboard/staff"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Dashboard
@@ -25,6 +25,12 @@ export default function StaffNav({ className, username, userid, staffid }) {
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Tasks
+          </Link>
+          <Link
+            href={`/projects/staff/${staffid}`}
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Projects
           </Link>
           <Link
             href="/examples/dashboard"

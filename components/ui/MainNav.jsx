@@ -1,13 +1,14 @@
-import { retrieveTokenData } from "@/store/AuthProvider";
 import AdminNav from "./AdminNav";
 import StaffNav from "./StaffNav";
+import { useContext } from "react";
+import authContext from "@/store/auth-context";
 
 export function MainNav({ className }) {
-  const tokenData = retrieveTokenData();
-  if (tokenData === null) {
-    return null;
+  const authCtx = useContext(authContext);
+  if (!authCtx.user) {
+    return <></>;
   }
-  const { usertype, name, sub, uniqueid } = tokenData;
+  const { usertype, name, sub, uniqueid } = authCtx.user;
   return (
     <>
       {usertype === "Staff" && (

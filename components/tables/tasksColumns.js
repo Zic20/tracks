@@ -4,7 +4,7 @@ import { MyDialog } from "../utilities/MyDialog";
 import DialogBox from "../utilities/DialogBox";
 import TeamForm from "../forms/TeamForm";
 
-export const teamColumns = (onDelete, onSubmit, isAdmin) => {
+export const tasksColumns = (onDelete, onSubmit, isAdmin) => {
   if (isAdmin) {
     return [
       {

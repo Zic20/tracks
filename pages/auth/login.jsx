@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect, useContext } from "react";
+import authContext from "@/store/auth-context";
 import { useRouter } from "next/router";
 import cookieCutter from "cookie-cutter";
 import Image from "next/image";
 import logo from "../../images/Logo.png";
+import jwt_decode from "jwt-decode";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -39,6 +41,7 @@ function Login() {
   });
 
   const router = useRouter();
+  const authCtx = useContext(authContext);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -76,6 +79,7 @@ function Login() {
 
     if (response.ok) {
       const responseData = await response.json();
+      authCtx.login(responseData);
       cookieCutter.set("access", responseData["access_token"]);
       cookieCutter.set("refresh", responseData["refresh_token"]);
       router.push("/dashboard");

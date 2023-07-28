@@ -11,6 +11,8 @@ import Cookies from "cookies";
 import { CheckCircle2Icon } from "lucide-react";
 import Head from "next/head";
 import { Fragment, useEffect, useReducer } from "react";
+import { useContext } from "react";
+import authContext from "@/store/auth-context";
 
 export const metadata = {
   title: "Project",
@@ -32,8 +34,35 @@ const teamReducer = (state, action) => {
   }
 };
 
-export default function ProjectDetail({ clients, project, team, staffList }) {
+const tasksReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD":
+      return [...state, action.payload];
+    case "REMOVE":
+      return state.filter((item) => item.id !== action.payload);
+    case "UPDATE":
+      const result = state.filter((item) => item.id !== action.payload.id);
+      result.push(action.payload);
+      const sortedList = result.sort((a, b) => a.id - b.id);
+      return sortedList;
+    default:
+      return state;
+  }
+};
+
+export default function ProjectDetail({
+  clients,
+  project,
+  team,
+  staffList,
+  tasks,
+}) {
   const [teamState, dispatch] = useReducer(teamReducer, []);
+  const [tasksState, dispatchTasks] = useReducer(tasksReducer, []);
+  const authCtx = useContext(authContext);
+  const { user } = authCtx;
+
+  console.log(user);
 
   useEffect(() => {
     if (team.length > 0) {
@@ -42,6 +71,14 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
       });
     }
   }, [team]);
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      tasks.forEach((item) => {
+        dispatchTasks({ type: "ADD", payload: item });
+      });
+    }
+  }, [tasks]);
 
   function onFormSubmitHandler(data, action) {
     if (action === "add") {
@@ -109,6 +146,7 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
                       clients={clients}
                       project={project}
                       onSubmit={onFormSubmitHandler}
+                      editable={user?.role === "Admin"}
                     />
                   </CardContent>
                 </Card>
@@ -119,13 +157,15 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
                 <Card className="col-span-12">
                   <CardHeader>
                     <CardTitle className="mb-3">Team</CardTitle>
-                    <MyDialog title={"New team member"}>
-                      <TeamForm
-                        stafflist={staffList}
-                        project={project.id}
-                        onSubmit={onFormSubmitHandler}
-                      />
-                    </MyDialog>
+                    {user?.role === "Admin" && (
+                      <MyDialog title={"New team member"}>
+                        <TeamForm
+                          stafflist={staffList}
+                          project={project.id}
+                          onSubmit={onFormSubmitHandler}
+                        />
+                      </MyDialog>
+                    )}
                   </CardHeader>
                   <CardContent className="pl-3">
                     <DataTable columns={columns} data={teamState} />
@@ -138,13 +178,15 @@ export default function ProjectDetail({ clients, project, team, staffList }) {
                 <Card className="col-span-12">
                   <CardHeader>
                     <CardTitle className="mb-3">Tasks</CardTitle>
-                    <MyDialog title={"New task"}>
-                      <TeamForm
-                        stafflist={staffList}
-                        project={project.id}
-                        onSubmit={onFormSubmitHandler}
-                      />
-                    </MyDialog>
+                    {user?.role === "Admin" && (
+                      <MyDialog title={"New task"}>
+                        <TeamForm
+                          stafflist={staffList}
+                          project={project.id}
+                          onSubmit={onFormSubmitHandler}
+                        />
+                      </MyDialog>
+                    )}
                   </CardHeader>
                   <CardContent className="pl-3">
                     <DataTable columns={columns} data={teamState} />
@@ -207,6 +249,16 @@ export async function getServerSideProps({ req, res, params }) {
     },
   });
 
+  const tasksResponse = await fetch(
+    `http://localhost/tracksapi/projecttasks?project=${projectid}`,
+    {
+      mode: "no-cors",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
   if (!projectResponse.ok) {
     return {
       redirect: {
@@ -216,11 +268,12 @@ export async function getServerSideProps({ req, res, params }) {
     };
   }
 
-  const [clients, project, team, staffList] = await Promise.all([
+  const [clients, project, team, staffList, tasks] = await Promise.all([
     response.json(),
     projectResponse.json(),
     teamResponse.json(),
     staffListResponse.json(),
+    tasksResponse.json(),
   ]);
 
   return {
@@ -229,6 +282,7 @@ export async function getServerSideProps({ req, res, params }) {
       project: project.status ? project.data : [],
       team: team.status ? team.data : [],
       staffList: staffList,
+      tasks: tasks.status ? tasks.data : [],
     },
   };
 }

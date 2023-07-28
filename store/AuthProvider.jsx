@@ -2,23 +2,38 @@
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import authContext from "./auth-context";
 
 const AuthProvider = (props) => {
-  const accessToken = retrieveStoredToken();
-  const refresh = retrieveRefreshToken();
-  const [token, setToken] = useState(accessToken);
-  const [refreshToken, setRefreshToken] = useState(refresh);
-  const [hasToken, setHasToken] = useState(!!accessToken);
+  const [token, setToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
+  const [hasToken, setHasToken] = useState(false);
+  const [user, setUser] = useState({});
 
-  if (!hasToken && !refresh) {
+  useEffect(() => {
+    const storedToken = localStorage.getItem("access");
+    const refresh = localStorage.getItem("refresh");
+    if (storedToken) {
+      setToken(storedToken);
+      const tokenData = jwt_decode(storedToken);
+      setUser(tokenData);
+      setHasToken(true);
+    }
+    if (refresh) {
+      setRefreshToken(refresh);
+    }
+  }, []);
+
+  if (!hasToken && !refreshToken) {
     logoutHandler();
   }
 
   const setTokens = (data) => {
     setToken(data["access_token"]);
     setRefreshToken(data["refresh_token"]);
+    localStorage.setItem("access", data["access_token"]);
+    localStorage.setItem("refresh", data["refresh_token"]);
     setHasToken(true);
   };
 
@@ -32,6 +47,8 @@ const AuthProvider = (props) => {
       setRefreshToken("");
       Cookies.remove("access");
       Cookies.remove("refresh");
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
     }
   }
 
@@ -39,6 +56,7 @@ const AuthProvider = (props) => {
     isLoggedIn: hasToken,
     token,
     refreshToken,
+    user,
     login: loginHandler,
     logout: logoutHandler,
   };
@@ -52,7 +70,8 @@ const AuthProvider = (props) => {
 export default AuthProvider;
 
 export function retrieveStoredToken() {
-  const token = Cookies.get("access");
+  // const token = Cookies.get("access");
+  const token = localStorage.getItem("access");
   if (!token) {
     return null;
   }
@@ -69,6 +88,7 @@ export function retrieveStoredToken() {
 
 export function retrieveTokenData() {
   const token = Cookies.get("access");
+  console.log(token);
   if (!token) {
     return null;
   }

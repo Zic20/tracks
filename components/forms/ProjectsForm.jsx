@@ -15,6 +15,7 @@ export default function ProjectsForm({
   className,
   project,
   method = "POST",
+  editable = true,
 }) {
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -243,13 +244,15 @@ export default function ProjectsForm({
         </div>
       </div>
 
-      <Button
-        variant="default"
-        className="text-white bg-black w-full md:w-3/12 mt-5"
-        onClick={onSubmitHandler}
-      >
-        Save Changes
-      </Button>
+      {editable && (
+        <Button
+          variant="default"
+          className="text-white bg-black w-full md:w-3/12 mt-5"
+          onClick={onSubmitHandler}
+        >
+          Save Changes
+        </Button>
+      )}
     </form>
   );
 }
