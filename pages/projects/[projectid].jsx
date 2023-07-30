@@ -2,6 +2,7 @@ import ProjectsForm from "@/components/forms/ProjectsForm";
 import TeamForm from "@/components/forms/TeamForm";
 import { DataTable } from "@/components/tables/DataTable";
 import { teamColumns } from "@/components/tables/teamColumns";
+import { tasksColumns as taskHeaders } from "@/components/tables/tasksColumns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,11 +14,14 @@ import Head from "next/head";
 import { Fragment, useEffect, useReducer } from "react";
 import { useContext } from "react";
 import authContext from "@/store/auth-context";
+import TasksForm from "@/components/forms/TasksForm";
+import SideSheet from "@/components/SideSheet";
 
 export const metadata = {
   title: "Project",
   description: "Details about a project",
 };
+
 const teamReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
@@ -61,8 +65,6 @@ export default function ProjectDetail({
   const [tasksState, dispatchTasks] = useReducer(tasksReducer, []);
   const authCtx = useContext(authContext);
   const { user } = authCtx;
-
-  console.log(user);
 
   useEffect(() => {
     if (team.length > 0) {
@@ -113,7 +115,19 @@ export default function ProjectDetail({
       dispatch({ type: "REMOVE", payload: id });
     }
   }
-  const columns = teamColumns(onDeleteHandler, onFormSubmitHandler);
+  const columns = teamColumns(
+    onDeleteHandler,
+    onFormSubmitHandler,
+    user?.usertype === "Admin"
+  );
+
+  const taskColumns = taskHeaders(
+    onDeleteHandler,
+    onFormSubmitHandler,
+    user?.usertype === "Admin",
+    { project, stafflist: staffList, projectTasks: tasksState }
+  );
+
   return (
     <Fragment>
       <Head>
@@ -146,7 +160,7 @@ export default function ProjectDetail({
                       clients={clients}
                       project={project}
                       onSubmit={onFormSubmitHandler}
-                      editable={user?.role === "Admin"}
+                      editable={user?.usertype === "Admin"}
                     />
                   </CardContent>
                 </Card>
@@ -157,8 +171,8 @@ export default function ProjectDetail({
                 <Card className="col-span-12">
                   <CardHeader>
                     <CardTitle className="mb-3">Team</CardTitle>
-                    {user?.role === "Admin" && (
-                      <MyDialog title={"New team member"}>
+                    {user?.usertype === "Admin" && (
+                      <MyDialog title={"New member"}>
                         <TeamForm
                           stafflist={staffList}
                           project={project.id}
@@ -178,18 +192,23 @@ export default function ProjectDetail({
                 <Card className="col-span-12">
                   <CardHeader>
                     <CardTitle className="mb-3">Tasks</CardTitle>
-                    {user?.role === "Admin" && (
-                      <MyDialog title={"New task"}>
-                        <TeamForm
-                          stafflist={staffList}
+                    {user?.usertype === "Admin" && (
+                      <SideSheet
+                        title="New task"
+                        triggerTitle="New task"
+                        className="w-1/2"
+                      >
+                        <TasksForm
                           project={project.id}
                           onSubmit={onFormSubmitHandler}
+                          stafflist={staffList}
+                          projectTasks={tasksState}
                         />
-                      </MyDialog>
+                      </SideSheet>
                     )}
                   </CardHeader>
                   <CardContent className="pl-3">
-                    <DataTable columns={columns} data={teamState} />
+                    <DataTable columns={taskColumns} data={tasksState} />
                   </CardContent>
                 </Card>
               </div>
@@ -250,7 +269,7 @@ export async function getServerSideProps({ req, res, params }) {
   });
 
   const tasksResponse = await fetch(
-    `http://localhost/tracksapi/projecttasks?project=${projectid}`,
+    `http://localhost/tracksapi/projectstasks?project=${projectid}`,
     {
       mode: "no-cors",
       headers: {

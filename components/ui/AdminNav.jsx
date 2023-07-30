@@ -10,7 +10,7 @@ export default function AdminNav({ className, ...props }) {
           {...props}
         >
           <Link
-            href="/dashboard"
+            href="/dashboard/admin"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Dashboard
@@ -21,23 +21,26 @@ export default function AdminNav({ className, ...props }) {
           >
             Staff
           </Link>
+
           <Link
-            href="/examples/dashboard"
+            href="/clients"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
-            Tasks
+            Clients
           </Link>
+
+          <Link
+            href="/projects/admin"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Projects
+          </Link>
+
           <Link
             href="/examples/dashboard"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Reports
-          </Link>
-          <Link
-            href="/examples/dashboard"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-          >
-            Clients
           </Link>
         </nav>
         <div className="ml-auto flex items-center space-x-4">

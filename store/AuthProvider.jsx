@@ -70,7 +70,6 @@ const AuthProvider = (props) => {
 export default AuthProvider;
 
 export function retrieveStoredToken() {
-  // const token = Cookies.get("access");
   const token = localStorage.getItem("access");
   if (!token) {
     return null;
@@ -88,7 +87,6 @@ export function retrieveStoredToken() {
 
 export function retrieveTokenData() {
   const token = Cookies.get("access");
-  console.log(token);
   if (!token) {
     return null;
   }

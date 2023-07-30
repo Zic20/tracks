@@ -1,19 +1,25 @@
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
-import { MyDialog } from "../utilities/MyDialog";
 import DialogBox from "../utilities/DialogBox";
+import SideSheet from "../SideSheet";
 import TeamForm from "../forms/TeamForm";
+import TasksForm from "../forms/TasksForm";
 
-export const tasksColumns = (onDelete, onSubmit, isAdmin) => {
+export const tasksColumns = (
+  onDelete,
+  onSubmit,
+  isAdmin,
+  { project, stafflist, projectTasks }
+) => {
   if (isAdmin) {
     return [
       {
-        id: "StaffName",
-        accessorKey: "StaffName",
+        id: "Task",
+        accessorKey: "Task",
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Name
+              Task Name
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -27,12 +33,69 @@ export const tasksColumns = (onDelete, onSubmit, isAdmin) => {
         },
       },
       {
-        id: "Role",
-        accessorKey: "Role",
+        id: "Status",
+        accessorKey: "Status",
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Role
+              Task Status
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "Priority",
+        accessorKey: "Priority",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Priority
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "Deadline",
+        accessorKey: "Deadline",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Task Due Date
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "AssignedTo",
+        accessorKey: "AssignedTo",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Task Assigned To
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -48,33 +111,31 @@ export const tasksColumns = (onDelete, onSubmit, isAdmin) => {
 
       {
         id: "actions",
-        header: "",
+        header: "Actions",
         cell: ({ row }) => {
-          const teamMember = row.original;
-          function handleDelete() {
-            onDelete(teamMember.id);
-          }
-
-          function handleSubmit(data, action) {
-            onSubmit(data, action);
+          const task = row.original;
+          function deleteGoal() {
+            onDeleteHandler(goal.id);
           }
           return (
             <div className="flex gap-2">
-              <MyDialog title={"Edit"}>
-                <TeamForm
-                  member={teamMember}
-                  method="update"
-                  onSubmit={handleSubmit}
+              <SideSheet triggerTitle="Edit" title="Edit goal">
+                <TasksForm
+                  projectTasks={projectTasks}
+                  stafflist={stafflist}
+                  project={project}
+                  task={task}
+                  method="PATCH"
                 />
-              </MyDialog>
+              </SideSheet>
               <DialogBox
                 triggerTitle={"Delete"}
                 title={"Are you absolutely sure?"}
                 description={
-                  "This action cannot be undone. This will permenently remove the staff from this project"
+                  "This action cannot be undone. This will permenently delete this goal."
                 }
+                action={deleteGoal}
                 actionTitle={"Delete"}
-                action={handleDelete}
               />
             </div>
           );
@@ -90,25 +151,6 @@ export const tasksColumns = (onDelete, onSubmit, isAdmin) => {
           return (
             <div className="text-left p-0">
               Name
-              <Button
-                variant="ghost"
-                onClick={() =>
-                  column.toggleSorting(column.getIsSorted() === "asc")
-                }
-              >
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          );
-        },
-      },
-      {
-        id: "Role",
-        accessorKey: "Role",
-        header: ({ column }) => {
-          return (
-            <div className="text-left p-0">
-              Role
               <Button
                 variant="ghost"
                 onClick={() =>

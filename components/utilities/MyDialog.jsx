@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export function MyDialog({ title, description, children }) {
+export function MyDialog({ title, description, children, className }) {
   return (
     <Dialog>
       <DialogTrigger asChild>

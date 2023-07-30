@@ -10,15 +10,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import authContext from "@/store/auth-context";
 
-export function UserNav({ email, userid }) {
+export function UserNav() {
+  const router = useRouter();
+  const authCtx = useContext(authContext);
+  const { logout, user } = authCtx;
+
+  const logoutHandler = () => {
+    logout();
+    router.push("/auth/login");
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 border border-green-500">
             <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarFallback>{user.name[0]}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -27,25 +38,24 @@ export function UserNav({ email, userid }) {
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none"></p>
             <p className="text-xs leading-none text-muted-foreground">
-              {email}
+              {user.name}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="border border-t-0 border-x-0">
-            <Link href={`/staff/${userid}`}>Profile</Link>
-          </DropdownMenuItem>
+          {user.usertype === "Staff" && (
+            <DropdownMenuItem className="border border-t-0 border-x-0">
+              <Link href={`/staff/${user.uniqueid}`}>Profile</Link>
+            </DropdownMenuItem>
+          )}
 
           <DropdownMenuItem className="border border-t-0 border-x-0">
             Settings
           </DropdownMenuItem>
-          <DropdownMenuItem className="border border-t-0 border-x-0">
-            New Team
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

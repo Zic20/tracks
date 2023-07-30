@@ -117,7 +117,7 @@ export default function StaffGoalsPage({ list }) {
                 <CardTitle>Goals</CardTitle>
               </CardHeader>
               <CardContent className="pl-3">
-                <SideSheet triggerTitle="New Goal" title="Add new goal">
+                <SideSheet  triggerTitle="New Goal" title="Add new goal">
                   <GoalsForm onSubmit={onSubmitHandler} />
                 </SideSheet>
                 <DataTable columns={columns} data={goalsState} />

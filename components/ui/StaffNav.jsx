@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { UserNav } from "@/components/ui/UserNav";
 
-export default function StaffNav({ className, username, userid, staffid }) {
+export default function StaffNav({ className, staffid }) {
   return (
     <div className="border-b bg-white text-black sticky top-0 z-10">
       <div className="flex h-16 items-center px-4">
@@ -40,7 +40,7 @@ export default function StaffNav({ className, username, userid, staffid }) {
           </Link>
         </nav>
         <div className="ml-auto flex items-center space-x-4">
-          <UserNav email={username} userid={staffid} />
+          <UserNav />
         </div>
       </div>
     </div>

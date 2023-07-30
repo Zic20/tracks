@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 function DialogBox({ triggerTitle, title, description, actionTitle, action }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="bg-red-500 p-2 rounded text-white w-2/6">
+      <AlertDialogTrigger className="bg-red-500 p-2 rounded text-white w-max">
         {triggerTitle}
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-slate-100 text-black">
