@@ -41,11 +41,12 @@ const teamReducer = (state, action) => {
 const tasksReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
-      return [...state, action.payload];
+      const updatedState = state.concat(action.payload);
+      return updatedState;
     case "REMOVE":
       return state.filter((item) => item.id !== action.payload);
     case "UPDATE":
-      const result = state.filter((item) => item.id !== action.payload.id);
+      const result = state.filter((item) => +item.id !== +action.payload.id);
       result.push(action.payload);
       const sortedList = result.sort((a, b) => a.id - b.id);
       return sortedList;
@@ -84,18 +85,17 @@ export default function ProjectDetail({
 
   function onFormSubmitHandler(data, action) {
     if (action === "add") {
-      dispatch({ type: "ADD", payload: data });
+      dispatchTasks({ type: "ADD", payload: data });
     } else if (action === "update") {
-      dispatch({ type: "UPDATE", payload: data });
+      dispatchTasks({ type: "UPDATE", payload: data });
     }
   }
   const { toast } = useToast();
 
-  async function onDeleteHandler(id) {
+  async function handleTeamDelete(id) {
     const res = await fetch(`/api/teams/${id}`, {
       method: "DELETE",
     });
-    const data = await res.json();
     if (!res.ok) {
       toast({
         variant: "destructive",
@@ -115,17 +115,41 @@ export default function ProjectDetail({
       dispatch({ type: "REMOVE", payload: id });
     }
   }
+
+  async function handleTaskDelete(id) {
+    const response = await fetch(`/api/projecttasks/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      toast({
+        variant: "destructive",
+        title: "Process failed",
+        description: "Could not remove this task from the project",
+        className: "bg-white text-black",
+        action: <ToastAction altText="Try again">Retry</ToastAction>,
+      });
+    } else {
+      toast({
+        variant: "success",
+        title: "Process successful",
+        description: "Task removed successfully",
+        className: "bg-white text-black",
+        action: <CheckCircle2Icon className="text-green-500" />,
+      });
+      dispatchTasks({ type: "REMOVE", payload: id });
+    }
+  }
   const columns = teamColumns(
-    onDeleteHandler,
+    handleTeamDelete,
     onFormSubmitHandler,
     user?.usertype === "Admin"
   );
 
   const taskColumns = taskHeaders(
-    onDeleteHandler,
+    handleTaskDelete,
     onFormSubmitHandler,
     user?.usertype === "Admin",
-    { project, stafflist: staffList, projectTasks: tasksState }
+    { project, stafflist: team, projectTasks: tasksState }
   );
 
   return (
@@ -201,7 +225,7 @@ export default function ProjectDetail({
                         <TasksForm
                           project={project.id}
                           onSubmit={onFormSubmitHandler}
-                          stafflist={staffList}
+                          stafflist={team}
                           projectTasks={tasksState}
                         />
                       </SideSheet>

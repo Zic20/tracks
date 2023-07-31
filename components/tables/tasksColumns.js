@@ -90,8 +90,8 @@ export const tasksColumns = (
         },
       },
       {
-        id: "AssignedTo",
-        accessorKey: "AssignedTo",
+        id: "StaffName",
+        accessorKey: "StaffName",
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
@@ -115,7 +115,11 @@ export const tasksColumns = (
         cell: ({ row }) => {
           const task = row.original;
           function deleteGoal() {
-            onDeleteHandler(goal.id);
+            onDelete(task.id);
+          }
+
+          function handleSubmit(data, action) {
+            onSubmit(data, action);
           }
           return (
             <div className="flex gap-2">
@@ -126,6 +130,7 @@ export const tasksColumns = (
                   project={project}
                   task={task}
                   method="PATCH"
+                  onSubmit={handleSubmit}
                 />
               </SideSheet>
               <DialogBox

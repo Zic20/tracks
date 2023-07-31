@@ -58,54 +58,68 @@ const TasksForm = ({
       Project: +project,
     };
 
+    const staff = stafflist.filter((item) => +item.Staff === +assignedto);
+    data.StaffName = staff[0].StaffName;
     if (method === "POST") {
-      const res = await fetch("/api/projecttasks/create", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: result.message,
-          className: "bg-white text-black",
-        });
-        return;
-      }
-
-      toast({
-        variant: "success",
-        title: "Success",
-        description: "Task created successfully",
-        className: "bg-white text-black",
-      });
+      saveNew(data);
     } else {
-      const res = await fetch(`/api/projecttasks/${task.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        toast({
-          variant: "destructive",
-          title: "Ooops! Something went wrong.",
-          description: result?.message,
-          className: "bg-white text-black",
-        });
-        return;
-      }
+      updateTask(data);
+    }
+  };
+
+  async function saveNew(data) {
+    const res = await fetch("/api/projecttasks/create", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
       toast({
-        variant: "success",
-        title: "Success",
-        description: "Task updated successfully",
+        variant: "destructive",
+        title: "Error",
+        description: result.message,
         className: "bg-white text-black",
       });
+      return;
     }
-    // onSubmit();
-  };
+
+    toast({
+      variant: "success",
+      title: "Success",
+      description: "Task created successfully",
+      className: "bg-white text-black",
+    });
+    onSubmit(data, "add");
+  }
+
+  async function updateTask(data) {
+    data.Project = task.Project;
+
+    const res = await fetch(`/api/projecttasks/${task.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    if (!res.ok) {
+      toast({
+        variant: "destructive",
+        title: "Ooops! Something went wrong.",
+        description: result?.message,
+        className: "bg-white text-black",
+      });
+      return;
+    }
+    toast({
+      variant: "success",
+      title: "Success",
+      description: "Task updated successfully",
+      className: "bg-white text-black",
+    });
+    data.id = +task.id;
+    onSubmit(data, "update");
+  }
 
   function taskChangeHandler(event) {
     setEnteredTask(event.target.value);
@@ -163,8 +177,8 @@ const TasksForm = ({
           />
         </div>
       </div>
-      <div className="w-full md:flex md:space-x-2">
-        <div className="md:w-6/12 mb-2">
+      <div className="w-full flex ">
+        <div className="w-full">
           <label htmlFor="" className="mb-2">
             Priority
           </label>
@@ -204,7 +218,9 @@ const TasksForm = ({
             </SelectContent>
           </Select>
         </div>
-        <div className="md:w-6/12 mb-2">
+      </div>
+      <div className="w-full flex ">
+        <div className="w-full">
           <label htmlFor="" className="mb-2">
             Sub Task Of (Optional)
           </label>
@@ -232,6 +248,7 @@ const TasksForm = ({
           </Select>
         </div>
       </div>
+
       <div className="w-full flex">
         <div className="mb-2 w-full">
           <label htmlFor="" className="mb-2">
@@ -251,11 +268,9 @@ const TasksForm = ({
                   <SelectItem
                     key={staff.id}
                     className="text-black hover:bg-slate-400 bg-white"
-                    value={`${staff.id}`}
+                    value={`${staff.Staff}`}
                   >
-                    {`${staff.FirstName} ${
-                      staff.MiddleName ? staff.MiddleName : ""
-                    } ${staff.LastName}`}
+                    {`${staff.StaffName}`}
                   </SelectItem>
                 );
               })}
@@ -272,7 +287,7 @@ const TasksForm = ({
           <Select
             className="bg-dark mt-2 w-full"
             onValueChange={statusChangeHandler}
-            defaultValue={`${task.Status}`}
+            defaultValue={`${task?.Status}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Status" />

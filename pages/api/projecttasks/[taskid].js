@@ -18,13 +18,13 @@ export default async function handler(req, res) {
         body: req.body,
       }
     );
+    const responseData = await response.json();
 
     if (!response.ok) {
       res.status(response.status).json({ message: "Something went wrong" });
       return;
     }
 
-    const responseData = await response.json();
     res.status(response.status).json(responseData);
   } else if (req.method === "DELETE") {
     const { taskid } = req.query;
