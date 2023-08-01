@@ -150,12 +150,88 @@ export const tasksColumns = (
   } else {
     return [
       {
+        id: "Task",
+        accessorKey: "Task",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Task Name
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "Status",
+        accessorKey: "Status",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Task Status
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "Priority",
+        accessorKey: "Priority",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Priority
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
+        id: "Deadline",
+        accessorKey: "Deadline",
+        header: ({ column }) => {
+          return (
+            <div className="text-left p-0">
+              Task Due Date
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          );
+        },
+      },
+      {
         id: "StaffName",
         accessorKey: "StaffName",
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Name
+              Task Assigned To
               <Button
                 variant="ghost"
                 onClick={() =>
