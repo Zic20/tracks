@@ -75,6 +75,8 @@ export default function ProjectDetail({
     }
   }, [team]);
 
+  console.log(teamState);
+
   useEffect(() => {
     if (tasks.length > 0) {
       tasks.forEach((item) => {

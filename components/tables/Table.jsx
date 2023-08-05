@@ -2,13 +2,18 @@
 import * as React from "react";
 
 import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  ColumnFiltersState,
-  useReactTable,
-  getSortedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -20,14 +25,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { DataTableToolbar } from "./DataTableToolbar";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { DataTableToolbar } from "./DataTableToolbar";
 
-export function DataTable({ columns, data, searchColumn }) {
+export function DataTable({ columns, data, filterField }) {
   const [sorting, setSorting] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
+  const [rowSelection, setRowSelection] = useState([]);
+
   const table = useReactTable({
     data,
     columns,
@@ -38,17 +47,36 @@ export function DataTable({ columns, data, searchColumn }) {
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      columnVisibility,
+      columnFilters,
     },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   return (
     <div>
       <div className="flex items-center py-4">
-        <DataTableToolbar
-          table={table}
-          columns={columns}
-          searchColumn={searchColumn}
-        />
+        {filterField && (
+          <Input
+            placeholder={"Filter " + filterField}
+            value={table.getColumn(`${filterField}`)?.getFilterValue() ?? ""}
+            onChange={(event) =>
+              table
+                .getColumn(`${filterField}`)
+                ?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        )}
+        <DataTableToolbar table={table} />
       </div>
       <div className="rounded-md border">
         <Table>

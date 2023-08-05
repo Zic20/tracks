@@ -3,24 +3,11 @@ import Head from "next/head";
 import Cookies from "cookies";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/tables/DataTable";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import goalsColumns from "@/components/tables/goalsColumns";
-import { convertTimeToString } from "@/modules/timecalculation";
 import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@radix-ui/react-toast";
-import { CheckCircleIcon } from "lucide-react";
-import GoalsForm from "@/components/forms/GoalsForm";
-import SideSheet from "@/components/SideSheet";
 export const metadata = {
-  title: "Goals",
-  description: "Staff goals",
+  title: "Goals Report",
+  description: "Staff goals report",
 };
 
 const listReducer = (state, action) => {
@@ -43,7 +30,7 @@ const listReducer = (state, action) => {
     return state.filter((existingGoals) => existingGoals.id !== action.id);
   }
 };
-export default function StaffGoalsPage({ list }) {
+export default function GoalsReport({ list }) {
   const [goalsState, dispatchActivities] = useReducer(listReducer, []);
   const { toast } = useToast();
 
@@ -54,77 +41,26 @@ export default function StaffGoalsPage({ list }) {
       });
     }
   }, [list]);
-  function onSubmitHandler(data, id = null) {
-    if (id !== null) {
-      dispatchActivities({ type: "UPDATE", goal: data, id });
-      return;
-    }
 
-    dispatchActivities({ type: "ADD", goal });
-  }
-
-  async function onDeleteHandler(id) {
-    const response = await fetch(`/api/goals/delete/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      toast({
-        variant: "destructive",
-        title: "Process failed",
-        description: "Could not delete this task",
-        className: "bg-white text-black",
-        action: <ToastAction altText="Try again">Retry</ToastAction>,
-      });
-      return;
-    }
-
-    const responseData = await response.json();
-    if (!responseData.status) {
-      toast({
-        variant: "destructive",
-        title: "Process failed",
-        description: "Could not delete this task",
-        className: "bg-white text-black",
-        action: <ToastAction altText="Try again">Retry</ToastAction>,
-      });
-      return;
-    }
-
-    toast({
-      title: "Delete successful",
-      description: "Task deleted successfully",
-      className: "bg-white text-black",
-      action: <CheckCircleIcon className="text-green-300" />,
-    });
-    dispatchActivities({ type: "DELETE", id });
-  }
+  function onSubmitHandler(data, id = null) {}
 
   const columns = goalsColumns({
-    onSubmitHandler,
-    onDeleteHandler,
+    onSubmitHandler: () => {},
+    onDeleteHandler: () => {},
+    hasActions: false,
   });
   return (
     <Fragment>
       <Head>
-        <title>Goals</title>
+        <title>Goals Reports</title>
       </Head>
       <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-12 bg-white">
-              <CardHeader>
-                <CardTitle>Goals</CardTitle>
-              </CardHeader>
+              <CardHeader>{/* <CardTitle>Goals</CardTitle> */}</CardHeader>
               <CardContent className="pl-3">
-                <SideSheet triggerTitle="New Goal" title="Add new goal">
-                  <GoalsForm onSubmit={onSubmitHandler} />
-                </SideSheet>
-                <DataTable
-                  columns={columns}
-                  data={goalsState}
-                  searchColumn="Goal"
-                />
+                <DataTable columns={columns} data={goalsState} />
               </CardContent>
             </Card>
           </div>

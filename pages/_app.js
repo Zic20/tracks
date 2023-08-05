@@ -9,7 +9,6 @@ export default function App({ Component, pageProps }) {
   return (
     <AuthProvider>
       {!router.pathname.includes("auth") && <MainNav className="mx-6" />}
-
       <Component {...pageProps} />
       <Toaster className="bg-black text-white" />
     </AuthProvider>

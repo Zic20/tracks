@@ -21,6 +21,8 @@ export function UserNav() {
 
   const logoutHandler = () => {
     logout();
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
     router.push("/auth/login");
   };
   return (

@@ -13,6 +13,7 @@ import {
 import RecentActivities from "@/components/RecentActivities";
 import { Overview } from "@/components/Overview";
 import Cookies from "cookies";
+import { DatePickerWithRange } from "@/components/ui/DatePicker";
 
 export const metadata = {
   title: "Dashboard",
@@ -36,8 +37,6 @@ const PENDING_TASKS = [
 
 export default function StaffDashboard({ data }) {
   const { projects, tasks, activities, goals } = data;
-
-  console.log(tasks);
 
   const ongoingProjects = projects.filter(
     (project) => project.Status === "In Progress"
@@ -68,6 +67,7 @@ export default function StaffDashboard({ data }) {
       </Head>
       <div className="flex-col md:flex text-black bg-white min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
+          <DatePickerWithRange />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -120,7 +120,7 @@ export default function StaffDashboard({ data }) {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
+            <Card className="col-span-4 sm:w-full">
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
               </CardHeader>
@@ -129,7 +129,7 @@ export default function StaffDashboard({ data }) {
               </CardContent>
             </Card>
 
-            <Card className="col-span-3">
+            <Card className="md:col-span-3 sm:col-span-12 sm:w-full">
               <CardHeader>
                 <CardTitle>Pending Tasks</CardTitle>
                 <CardDescription>
