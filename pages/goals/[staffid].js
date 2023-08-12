@@ -118,23 +118,21 @@ export default function StaffGoalsPage({ list }) {
       </Head>
       <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
         <div className="flex-1 space-y-4 p-2 pt-6">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-12 bg-white sm:m-auto sm:w-11/12 w-full">
-              <CardHeader>
-                <CardTitle>Goals</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-3">
-                <SideSheet triggerTitle="New Goal" title="Add new goal">
-                  <GoalsForm onSubmit={onSubmitHandler} />
-                </SideSheet>
-                <DataTable
-                  columns={columns}
-                  data={goalsState}
-                  searchColumn="Goal"
-                />
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="col-span-12 bg-white overflow-y-auto sm:text-sm">
+            <CardHeader>
+              <CardTitle>Goals</CardTitle>
+            </CardHeader>
+            <CardContent className="pl-3">
+              <SideSheet triggerTitle="New Goal" title="Add new goal">
+                <GoalsForm onSubmit={onSubmitHandler} />
+              </SideSheet>
+              <DataTable
+                columns={columns}
+                data={goalsState}
+                searchColumn="Goal"
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Fragment>
@@ -172,6 +170,7 @@ export async function getServerSideProps({ req, res }) {
       },
     };
   }
+
   const goals = await response.json();
   return {
     props: {
