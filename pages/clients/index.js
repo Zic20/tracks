@@ -106,22 +106,21 @@ export default function ClientsPage({ list }) {
         <title>Clients</title>
       </Head>
       <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-12 bg-white">
-              <CardHeader>
-                <CardTitle>Clients</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-3">
-                <SideSheet triggerTitle={"New Client"} title={"Add new client"}>
-                  <ClientForm onSubmit={onSubmitHandler} />
-                </SideSheet>
-                <DataTable columns={columns} data={clientsState} />
-              </CardContent>
-            </Card>
-          </div>
+        <div className="flex-1 space-y-4 p-2 pt-6">
+          <Card className="col-span-12 bg-white overflow-y-auto sm:text-sm">
+            <CardHeader>
+              <CardTitle>Clients</CardTitle>
+            </CardHeader>
+            <CardContent className="pl-3">
+              <SideSheet triggerTitle={"New Client"} title={"Add new client"}>
+                <ClientForm onSubmit={onSubmitHandler} />
+              </SideSheet>
+              <DataTable columns={columns} data={clientsState} />
+            </CardContent>
+          </Card>
         </div>
       </div>
+      {/* </div> */}
     </Fragment>
   );
 }

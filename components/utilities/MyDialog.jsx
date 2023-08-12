@@ -12,7 +12,7 @@ export function MyDialog({ title, description, children, className }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-black text-white w-1/6" variant="outline">
+        <Button className="bg-black text-white w-max" variant="outline">
           {title}
         </Button>
       </DialogTrigger>

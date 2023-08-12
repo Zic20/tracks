@@ -24,29 +24,24 @@ export default function StaffIndexPage({ list }) {
       <Head>
         <title>Staff</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-white min-h-screen">
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Staff</h2>
-          </div>
-          <Button
-            onClick={onNewStaffClickHandler}
-            className="bg-black text-white"
-            size="sm"
-          >
-            New Staff
-            <PlusIcon className="h-4 ml-2 w-4 text-muted-foreground font-bold" />
-          </Button>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-12">
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-3">
-                <DataTable columns={columns} data={list} />
-              </CardContent>
-            </Card>
-          </div>
+      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+        <div className="flex-1 space-y-4 p-2 pt-6">
+          <Card className="col-span-12 bg-white overflow-y-auto sm:text-sm">
+            <CardHeader>
+              <CardTitle>Staff</CardTitle>
+            </CardHeader>
+            <CardContent className="pl-3">
+              <Button
+                onClick={onNewStaffClickHandler}
+                className="bg-black text-white"
+                size="sm"
+              >
+                New Staff
+                <PlusIcon className="h-4 ml-2 w-4 text-muted-foreground font-bold" />
+              </Button>
+              <DataTable columns={columns} data={list} />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Fragment>

@@ -43,8 +43,8 @@ export default function MemberProfilePage({ stafflist, staff }) {
       <Head>
         <title>Staff Profile</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-white min-h-screen">
-        <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+        <div className="flex-1 space-y-4 p-2 pt-6">
           <Tabs defaultValue="profile" className="space-y-4">
             <TabsList className="bg-slate-300 md:w-3/12 justify-start space-x-2">
               <TabsTrigger className="w-6/12 focus:bg-white" value="profile">
@@ -56,7 +56,7 @@ export default function MemberProfilePage({ stafflist, staff }) {
             </TabsList>
             <TabsContent value="profile" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-12">
+                <Card className="col-span-12 bg-white">
                   <CardHeader>
                     <CardTitle>Profile</CardTitle>
                   </CardHeader>
@@ -74,7 +74,7 @@ export default function MemberProfilePage({ stafflist, staff }) {
             </TabsContent>
             <TabsContent value="security" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-2">
+                <Card className="col-span-2 bg-white">
                   <CardHeader>
                     <CardTitle>Reset password</CardTitle>
                   </CardHeader>

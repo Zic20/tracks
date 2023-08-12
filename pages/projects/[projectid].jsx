@@ -157,8 +157,9 @@ export default function ProjectDetail({
       <Head>
         <title>{project?.Name}</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-white min-h-screen">
-        <div className="flex-1 space-y-4 p-8 pt-6">
+
+      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+        <div className="flex-1 space-y-4 p-2 pt-6">
           <Tabs defaultValue="profile" className="space-y-4">
             <TabsList className="bg-slate-300 md:w-3/12 justify-start space-x-2">
               <TabsTrigger className="w-6/12 focus:bg-white" value="profile">
@@ -173,13 +174,13 @@ export default function ProjectDetail({
             </TabsList>
             <TabsContent value="profile" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-12">
+                <Card className="col-span-12 bg-white">
                   <CardHeader>
                     <CardTitle>Project</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-3 md:flex space-x-2">
                     <ProjectsForm
-                      className="col-span-2"
+                      className="col-span-2 border-none w-full p-0"
                       method="PATCH"
                       clients={clients}
                       project={project}
@@ -192,7 +193,7 @@ export default function ProjectDetail({
             </TabsContent>
             <TabsContent value="team" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-12 lg:grid-cols-7">
-                <Card className="col-span-12">
+                <Card className="col-span-12 bg-white">
                   <CardHeader>
                     <CardTitle className="mb-3">Team</CardTitle>
                     {user?.usertype === "Admin" && (
@@ -213,9 +214,9 @@ export default function ProjectDetail({
             </TabsContent>
             <TabsContent value="tasks" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-12 lg:grid-cols-7">
-                <Card className="col-span-12 overflow-y-auto">
+                <Card className="col-span-12 overflow-y-auto bg-white">
                   <CardHeader>
-                    <CardTitle className="mb-3">Tasks</CardTitle>
+                    <CardTitle className="mb-2">Tasks</CardTitle>
                     {user?.usertype === "Admin" && (
                       <SideSheet
                         title="New task"
