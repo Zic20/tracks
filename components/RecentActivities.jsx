@@ -48,7 +48,7 @@ export const PendingTasks = ({ tasks }) => {
                 {task.title[0].toUpperCase() + task.title[1].toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="ml-4 space-y-1" key={`d${task.id}`}>
+            <div className="ml-4 space-y-1" key={`pending${task.id}`}>
               <p className="text-sm font-medium leading-none">{task.title}</p>
               <p className="text-sm text-muted-foreground">
                 Deadline: {task.deadline}

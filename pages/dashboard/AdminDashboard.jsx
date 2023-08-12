@@ -1,4 +1,5 @@
 import { Activity, UserCircle, Users, WorkflowIcon } from "lucide-react";
+import Cookies from "cookies";
 import dayjs from "dayjs";
 
 import {
@@ -12,6 +13,7 @@ import {
 import { PendingTasks } from "@/components/RecentActivities";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDateString } from "@/modules/timecalculation";
+import Head from "next/head";
 
 export const metadata = {
   title: "Dashboard",
@@ -20,7 +22,6 @@ export const metadata = {
 
 export default function AdminDashboard({ data }) {
   const { projects, staff, tasks, clients } = data;
-  console.log(projects);
   const ongoingProjects = projects.filter(
     (project) => project.Status === "In Progress"
   );
@@ -36,7 +37,7 @@ export default function AdminDashboard({ data }) {
   const formatedTask = pendingTasks.map((task, index) => {
     const date = dayjs(task.Deadline).diff(dayjs(), "day");
     return {
-      id: task.TaskID,
+      id: task.id,
       title: `${task.Task} (${task.ProjectName})`,
       date: task.StartDate,
       deadline: date > 0 ? `Due in ${date} days` : "Overdue",
@@ -45,96 +46,149 @@ export default function AdminDashboard({ data }) {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Staff</CardTitle>
-            <Users className="h-4 w-4 text-green-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{staff}</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Clients</CardTitle>
-            <UserCircle className="h-4 w-4 text-green-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {clients > 0 ? clients - 1 : clients}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Projects
-            </CardTitle>
-            <WorkflowIcon className="h-4 w-4 text-green-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{projects.length}</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Completed Projects
-            </CardTitle>
-            <Activity className="h-4 w-4 text-green-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{completedProjects.length}</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-        <Card className="col-span-6 sm:w-full bg-white">
-          <CardHeader>
-            <CardTitle>Ongoing Projects</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            {ongoingProjects.map((project) => {
-              return (
-                <div
-                  key={project.id}
-                  className="flex items-center last:border-b-0 border-b py-2"
-                >
-                  <Avatar className="h-9 w-9" key={project.id}>
-                    <AvatarImage src={project.image} alt="Avatar" />
-                    <AvatarFallback>
-                      {project.Name[0].toUpperCase() +
-                        project.Name[1].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="ml-4 space-y-1" key={`act${project.id}`}>
-                    <p className="text-sm font-medium leading-none">
-                      {project.Name}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Date: {getDateString(project?.Deadline)}
-                    </p>
-                  </div>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="bg-white">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Staff
+                </CardTitle>
+                <Users className="h-4 w-4 text-green-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{staff}</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Clients</CardTitle>
+                <UserCircle className="h-4 w-4 text-green-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {clients > 0 ? clients - 1 : clients}
                 </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+            <Card className="bg-white">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Projects
+                </CardTitle>
+                <WorkflowIcon className="h-4 w-4 text-green-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{projects.length}</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Completed Projects
+                </CardTitle>
+                <Activity className="h-4 w-4 text-green-400" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {completedProjects.length}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        <Card className="col-span-6 w-full bg-white">
-          <CardHeader>
-            <CardTitle>Pending Tasks</CardTitle>
-            <CardDescription>
-              You have {formatedTask.length} pending tasks.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <PendingTasks tasks={formatedTask} />
-          </CardContent>
-        </Card>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+            <Card className="col-span-6 sm:w-full bg-white">
+              <CardHeader>
+                <CardTitle>Ongoing Projects</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2">
+                {ongoingProjects.map((project) => {
+                  return (
+                    <div
+                      key={"pr" + project.id}
+                      className="flex items-center last:border-b-0 border-b py-2"
+                    >
+                      <Avatar className="h-9 w-9" key={"pr" + project.id}>
+                        <AvatarImage src={project.image} alt="Avatar" />
+                        <AvatarFallback>
+                          {project.Name[0].toUpperCase() +
+                            project.Name[1].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="ml-4 space-y-1" key={`${project.id}`}>
+                        <p className="text-sm font-medium leading-none">
+                          {project.Name}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Date: {getDateString(project?.Deadline)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            <Card className="col-span-6 w-full bg-white">
+              <CardHeader>
+                <CardTitle>Pending Tasks</CardTitle>
+                <CardDescription>
+                  You have {formatedTask.length} pending tasks.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PendingTasks tasks={formatedTask} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const cookies = new Cookies(req, res);
+  const accessToken = cookies.get("access");
+  const apiUrl = process.env.API_URL;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const response = await fetch(`${apiUrl}/adminreports`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    return {
+      props: {
+        data: {
+          projects: [],
+          staff: 0,
+          tasks: [],
+          clients: 0,
+        },
+      },
+    };
+  }
+
+  const responseData = await response.json();
+
+  return {
+    props: {
+      data: responseData.data,
+    },
+  };
 }

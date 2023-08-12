@@ -1,24 +1,18 @@
 import Head from "next/head";
 import Cookies from "cookies";
 import jwt_decode from "jwt-decode";
-import AdminDashboard from "./AdminDashboard";
 
 export const metadata = {
   title: "Dashboard",
   description: "App Dashboard",
 };
 
-export default function DashboardPage({ data }) {
+export default function DashboardPage() {
   return (
     <>
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <AdminDashboard data={data} />
-        </div>
-      </div>
     </>
   );
 }
@@ -49,6 +43,15 @@ export async function getServerSideProps({ req, res }) {
   }
 
   if (usertype === "Manager") {
+    return {
+      redirect: {
+        destination: "/dashboard/AdminDashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  if (usertype === "Admin") {
     return {
       redirect: {
         destination: "/dashboard/AdminDashboard",
