@@ -37,6 +37,12 @@ const listReducer = (state, action) => {
     const sortedList = result.sort((a, b) => a.id - b.id);
     return sortedList;
   }
+
+  if (action.type === "DELETE_ALL") {
+    return [];
+  }
+
+  return state;
 };
 
 export default function ClientsPage({ list }) {
@@ -44,12 +50,14 @@ export default function ClientsPage({ list }) {
   const { toast } = useToast();
 
   useEffect(() => {
+    dispatchClients({ type: "DELETE_ALL" });
     if (list) {
       list.forEach((client) => {
         dispatchClients({ type: "ADD", client });
       });
     }
   }, [list]);
+
   function onSubmitHandler(data, id = null) {
     if (id !== null) {
       dispatchClients({ type: "UPDATE", client: data, id });
@@ -120,7 +128,6 @@ export default function ClientsPage({ list }) {
           </Card>
         </div>
       </div>
-      {/* </div> */}
     </Fragment>
   );
 }
