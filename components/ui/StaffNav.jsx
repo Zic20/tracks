@@ -33,7 +33,7 @@ export default function StaffNav({ className, staffid }) {
           >
             Projects
           </Link>
-          <DropMenu
+          {/* <DropMenu
             title="Reports"
             items={[
               {
@@ -43,13 +43,7 @@ export default function StaffNav({ className, staffid }) {
               { title: "Tasks", link: `/reports/tasks/${staffid}` },
               { title: "Projects", link: `/reports/projects/${staffid}` },
             ]}
-          />
-          {/* <Link
-            href="/examples/dashboard"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-          >
-            Reports
-          </Link> */}
+          /> */}
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           <UserNav />

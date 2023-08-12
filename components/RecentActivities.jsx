@@ -1,27 +1,57 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDateString } from "@/modules/timecalculation";
 
 const RecentActivities = ({ activities }) => {
   return (
     <div className="space-y-5">
-      {activities.map((activity) => {
+      {activities &&
+        activities.map((activity) => {
+          return (
+            <div
+              key={activity.id}
+              className="flex items-center last:border-b-0 border-b pb-2"
+            >
+              <Avatar className="h-9 w-9" key={activity.id}>
+                <AvatarImage src={activity.image} alt="Avatar" />
+                <AvatarFallback>
+                  {activity.Activity[0].toUpperCase() +
+                    activity.Activity[1].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="ml-4 space-y-1" key={`act${activity.id}`}>
+                <p className="text-sm font-medium leading-none">
+                  {activity.Activity}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Date: {getDateString(activity?.Date)}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
+};
+
+export const PendingTasks = ({ tasks }) => {
+  return (
+    <div className="space-y-5">
+      {tasks.map((task) => {
         return (
           <div
-            key={activity.id}
+            key={task.id}
             className="flex items-center last:border-b-0 border-b pb-2"
           >
-            <Avatar className="h-9 w-9" key={activity.id}>
-              <AvatarImage src={activity.image} alt="Avatar" />
+            <Avatar className="h-9 w-9" key={task.id}>
+              <AvatarImage src={task.image} alt="Avatar" />
               <AvatarFallback>
-                {activity.title[0].toUpperCase() +
-                  activity.title[1].toUpperCase()}
+                {task.title[0].toUpperCase() + task.title[1].toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="ml-4 space-y-1" key={`d${activity.id}`}>
-              <p className="text-sm font-medium leading-none">
-                {activity.title}
-              </p>
+            <div className="ml-4 space-y-1" key={`d${task.id}`}>
+              <p className="text-sm font-medium leading-none">{task.title}</p>
               <p className="text-sm text-muted-foreground">
-                Deadline: {activity.deadline}
+                Deadline: {task.deadline}
               </p>
             </div>
           </div>

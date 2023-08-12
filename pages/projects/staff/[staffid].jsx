@@ -21,7 +21,7 @@ export default function ProjectsPage({ list }) {
       <div className="flex-col md:flex text-black bg-white min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-12">
+            <Card className="col-span-12 overflow-y-auto">
               <CardHeader>
                 <CardTitle>Projects</CardTitle>
               </CardHeader>

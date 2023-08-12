@@ -122,6 +122,18 @@ export function getTimeString(time) {
   return `${hour}:${minutes}`;
 }
 
+/**
+ * Converts a given date into a formatted string representing the date in a human-readable format.
+ * The date format is "Month Day, Year" (e.g., "January 1, 2022").
+ *
+ * @param {Date|string} date - The date object or string representation of a date.
+ * @returns {string} The formatted date string.
+ */
+export function getDateString(date) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  date = new Date(date).toLocaleDateString("en-US", options);
+  return date;
+}
 export function totalTime(dataset) {
   let totalHours = 0;
   let totalMinutes = 0;

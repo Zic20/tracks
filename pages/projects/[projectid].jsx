@@ -75,8 +75,6 @@ export default function ProjectDetail({
     }
   }, [team]);
 
-  console.log(teamState);
-
   useEffect(() => {
     if (tasks.length > 0) {
       tasks.forEach((item) => {
@@ -215,7 +213,7 @@ export default function ProjectDetail({
             </TabsContent>
             <TabsContent value="tasks" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-12 lg:grid-cols-7">
-                <Card className="col-span-12">
+                <Card className="col-span-12 overflow-y-auto">
                   <CardHeader>
                     <CardTitle className="mb-3">Tasks</CardTitle>
                     {user?.usertype === "Admin" && (

@@ -19,7 +19,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Name
+              Task
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -38,7 +38,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Status
+              Status
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -76,7 +76,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Due Date
+              Due Date
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -95,7 +95,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Assigned To
+              Assigned To
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -155,7 +155,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Name
+              Task
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -174,7 +174,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Status
+              Status
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -212,7 +212,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Due Date
+              Due Date
               <Button
                 variant="ghost"
                 onClick={() =>
@@ -231,7 +231,7 @@ export const tasksColumns = (
         header: ({ column }) => {
           return (
             <div className="text-left p-0">
-              Task Assigned To
+              Assigned To
               <Button
                 variant="ghost"
                 onClick={() =>

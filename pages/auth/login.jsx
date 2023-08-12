@@ -88,7 +88,7 @@ function Login() {
 
   return (
     <div className="min-h-screen flex justify-center align-middle bg-slate-200">
-      <div className="bg-white shadow-ld w-2/6 p-5 text-center text-black rounded-lg my-auto">
+      <div className="bg-white shadow-ld md:w-2/6 p-5 text-center text-black rounded-lg my-auto">
         <Image
           src={logo}
           width="50"
@@ -100,7 +100,7 @@ function Login() {
         <p className="mb-5 text-gray-600">Please sign in to continue.</p>
 
         <input
-          type="text"
+          type="email"
           className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
           placeholder="Email"
           onChange={onEmailChangeHandler}

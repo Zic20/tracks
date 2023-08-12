@@ -10,18 +10,20 @@ import { DataTableFacetedFilter } from "@/components/tables/DataTableFacetedFilt
 
 export function DataTableToolbar({ table, columns, searchColumn }) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  console.log(columns);
+
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Search"
-          value={table.getColumn(searchColumn)?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn(searchColumn)?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
+        {searchColumn && (
+          <Input
+            placeholder="Search"
+            value={table.getColumn(searchColumn)?.getFilterValue() ?? ""}
+            onChange={(event) =>
+              table.getColumn(searchColumn)?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
         {columns &&
           columns.map((col) => {
             const accessorKey = col?.accessorKey;

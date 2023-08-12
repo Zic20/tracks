@@ -111,7 +111,7 @@ export default function StaffTasksPage({ list, agencies, activitytypes }) {
       <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-12 bg-white">
+            <Card className="col-span-12 bg-white overflow-y-auto">
               <CardHeader>
                 <CardTitle>Tasks</CardTitle>
               </CardHeader>
