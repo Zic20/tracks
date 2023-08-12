@@ -38,12 +38,19 @@ const listReducer = (state, action) => {
     const sortedList = result.sort((a, b) => a.id - b.id);
     return sortedList;
   }
+
+  if (action.type === "DELETE_ALL") {
+    return [];
+  }
+
+  return state;
 };
 export default function StaffTasksPage({ list, agencies, activitytypes }) {
   const [activitiesState, dispatchActivities] = useReducer(listReducer, []);
   const { toast } = useToast();
 
   useEffect(() => {
+    dispatchActivities({ type: "DELETE_ALL" });
     if (list) {
       list.forEach((activity) => {
         activity.TimeInput = convertTimeToString(activity.TimeInput);
@@ -51,6 +58,7 @@ export default function StaffTasksPage({ list, agencies, activitytypes }) {
       });
     }
   }, [list]);
+
   function onSubmitHandler(data, id = null) {
     if (id !== null) {
       dispatchActivities({ type: "UPDATE", activity: data, id });

@@ -42,12 +42,19 @@ const listReducer = (state, action) => {
   if (action.type === "DELETE") {
     return state.filter((existingGoals) => existingGoals.id !== action.id);
   }
+
+  if (action.type === "DELETE_ALL") {
+    return [];
+  }
+
+  return state;
 };
 export default function StaffGoalsPage({ list }) {
   const [goalsState, dispatchActivities] = useReducer(listReducer, []);
   const { toast } = useToast();
 
   useEffect(() => {
+    dispatchActivities({ type: "DELETE_ALL" });
     if (list) {
       list.forEach((goal) => {
         dispatchActivities({ type: "ADD", goal });

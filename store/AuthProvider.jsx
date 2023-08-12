@@ -25,6 +25,8 @@ const AuthProvider = (props) => {
     }
   }, []);
 
+  
+
   if (!hasToken && !refreshToken) {
     logoutHandler();
   }
