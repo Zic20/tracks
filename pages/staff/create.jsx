@@ -37,7 +37,7 @@ export default function Create(props) {
       <Head>
         <title>Add Staff</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-2 pt-6">
           <Card className="col-span-12 bg-white overflow-y-auto sm:text-sm p-0">
             <CardHeader>
@@ -62,6 +62,8 @@ export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
 
+  const apiUrl = process.env.API_URL;
+
   if (!accessToken) {
     return {
       redirect: {
@@ -71,7 +73,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const response = await fetch("http://localhost/tracksapi/staff", {
+  const response = await fetch(`${apiUrl}/staff`, {
     mode: "no-cors",
     headers: {
       Authorization: `Bearer ${accessToken}`,

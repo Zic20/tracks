@@ -43,7 +43,7 @@ export default function MemberProfilePage({ stafflist, staff }) {
       <Head>
         <title>Staff Profile</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-2 pt-6">
           <Tabs defaultValue="profile" className="space-y-4">
             <TabsList className="bg-slate-300 md:w-3/12 justify-start space-x-2">
@@ -117,6 +117,7 @@ export async function getServerSideProps({ req, res, params }) {
   const staffid = params.staffid;
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
+  const apiUrl = process.env.API_URL;
 
   if (!accessToken) {
     return {
@@ -127,22 +128,19 @@ export async function getServerSideProps({ req, res, params }) {
     };
   }
 
-  const response = await fetch("http://localhost/tracksapi/staff", {
+  const response = await fetch(`${apiUrl}/staff`, {
     mode: "no-cors",
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
-  const staffInfoResponse = await fetch(
-    `http://localhost/tracksapi/staff/${staffid}`,
-    {
-      mode: "no-cors",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const staffInfoResponse = await fetch(`${apiUrl}/staff/${staffid}`, {
+    mode: "no-cors",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
   if (!staffInfoResponse.ok) {
     return {

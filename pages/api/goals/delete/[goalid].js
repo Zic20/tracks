@@ -6,11 +6,13 @@ async function handler(req, res) {
     const cookies = new Cookies(req, res);
     const accessToken = cookies.get("access");
 
+    const apiUrl = process.env.API_URL;
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(`http://localhost/tracksapi/goals/${goalid}`, {
+    const response = await fetch(`${apiUrl}/goals/${goalid}`, {
       method: "DELETE",
       headers,
     });

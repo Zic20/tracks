@@ -1,10 +1,6 @@
 import Head from "next/head";
 import Cookies from "cookies";
-import { useContext } from "react";
-import authContext from "@/store/auth-context";
-import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
-// import StaffDashboard from "./Staff";
 import AdminDashboard from "./AdminDashboard";
 
 export const metadata = {
@@ -12,15 +8,15 @@ export const metadata = {
   description: "App Dashboard",
 };
 
-export default function DashboardPage() {
+export default function DashboardPage({ data }) {
   return (
     <>
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-white min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <AdminDashboard />
+          <AdminDashboard data={data} />
         </div>
       </div>
     </>
@@ -30,6 +26,7 @@ export default function DashboardPage() {
 export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
+  const apiUrl = process.env.API_URL;
 
   if (!accessToken) {
     return {
@@ -60,7 +57,31 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
+  const response = await fetch(`${apiUrl}/adminreports`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    return {
+      props: {
+        data: {
+          projects: [],
+          staff: 0,
+          tasks: [],
+          clients: 0,
+        },
+      },
+    };
+  }
+
+  const responseData = await response.json();
+  console.log(responseData);
+
   return {
-    props: {},
+    props: {
+      data: responseData.data,
+    },
   };
 }

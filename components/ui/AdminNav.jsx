@@ -10,7 +10,7 @@ export default function AdminNav({ className, ...props }) {
           {...props}
         >
           <Link
-            href="/dashboard/admin"
+            href="/dashboard"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Dashboard

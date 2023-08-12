@@ -9,7 +9,7 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch("http://localhost/tracksapi/activities", {
+    const response = await fetch(`${apiUrl}/activities`, {
       method: "POST",
       mode: "no-cors",
       headers,

@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import cookieCutter from "cookie-cutter";
 import Image from "next/image";
 import logo from "../../images/Logo.png";
-import jwt_decode from "jwt-decode";
+import Head from "next/head";
+import { useToast } from "@/components/ui/use-toast";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -52,6 +53,9 @@ function Login() {
       clearTimeout(identifier);
     };
   }, [emailState.isValid, passwordState.isValid]);
+
+  const { toast } = useToast();
+
   function onEmailChangeHandler(event) {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
   }
@@ -82,60 +86,78 @@ function Login() {
       authCtx.login(responseData);
       cookieCutter.set("access", responseData["access_token"]);
       cookieCutter.set("refresh", responseData["refresh_token"]);
-      router.push("/dashboard");
+      router.replace("/dashboard");
+    } else {
+      // const responseData = await response.json();
+      toast({
+        variant: "destructive",
+        title: "Invalid credentials",
+        description: "Invalid username or password",
+        className: "bg-white text-black",
+      });
     }
   }
 
   return (
-    <div className="min-h-screen flex justify-center align-middle bg-slate-200">
-      <div className="bg-white shadow-ld md:w-2/6 p-5 text-center text-black rounded-lg my-auto">
-        <Image
-          src={logo}
-          width="50"
-          height="100"
-          className="mx-auto rounded-full mb-2"
-          alt="logo"
-        />
-        <h1 className="text-2xl mb-5 font-bold">Welcome Back!</h1>
-        <p className="mb-5 text-gray-600">Please sign in to continue.</p>
+    <>
+      <Head>
+        <title>Sign In</title>
+      </Head>
+      <div className="min-h-screen flex justify-center align-middle bg-slate-200">
+        <div className="bg-white shadow-ld md:w-2/6 p-5 text-center text-black rounded-lg my-auto">
+          <Image
+            src={logo}
+            width="50"
+            height="100"
+            className="mx-auto rounded-full mb-2"
+            alt="logo"
+          />
+          <h1 className="text-2xl mb-5 font-bold">Welcome Back!</h1>
+          <p className="mb-5 text-gray-600">Please sign in to continue.</p>
 
-        <input
-          type="email"
-          className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
-          placeholder="Email"
-          onChange={onEmailChangeHandler}
-          onBlur={onEmailBlurHandler}
-        />
-        <input
-          type="password"
-          className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
-          placeholder="Password"
-          onChange={onPasswordChangeHandler}
-          onBlur={onPasswordBlurHandler}
-        />
+          <form action="">
+            <input
+              type="email"
+              className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
+              placeholder="Email"
+              onChange={onEmailChangeHandler}
+              onBlur={onEmailBlurHandler}
+            />
+            <input
+              type="password"
+              className="border border-gray-300 rounded-md placeholder-black p-3 w-full my-5 focus:outline-none"
+              placeholder="Password"
+              onChange={onPasswordChangeHandler}
+              onBlur={onPasswordBlurHandler}
+            />
 
-        <div className="flex flex-row">
-          <Link className="underline text-blue-600" href={"/auth/requestcode"}>
-            Forgot Password?
-          </Link>
+            <div className="flex flex-row">
+              <Link
+                className="underline text-blue-600"
+                href={"/auth/requestcode"}
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
+            <button
+              className="bg-black rounded text-white p-3 w-full my-5"
+              disabled={!formisValid}
+              onClick={loginHandler}
+            >
+              Sign In
+            </button>
+
+            <p>
+              {"Don't have an account?"}{" "}
+              <Link className="underline text-blue-600" href={"/auth/signup"}>
+                Create an account
+              </Link>
+            </p>
+          </form>
         </div>
-
-        <button
-          className="bg-black rounded text-white p-3 w-full my-5"
-          disabled={!formisValid}
-          onClick={loginHandler}
-        >
-          Sign In
-        </button>
-
-        <p>
-          {"Don't have an account?"}{" "}
-          <Link className="underline text-blue-600" href={"/auth/signup"}>
-            Create an account
-          </Link>
-        </p>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 function RequestCodePage() {
   return (
-    <div className="min-h-screen flex justify-center align-middle bg-slate-200">
+    <div className="min-h-screen flex justify-center align-middle bg-slate-100">
       <div className="bg-white shadow-ld w-2/6 p-5 text-center text-black rounded-lg my-auto">
         <h1 className="text-2xl mb-5 font-bold">Reset Password</h1>
         <p className="mb-5 text-gray-600">

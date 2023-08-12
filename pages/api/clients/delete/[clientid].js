@@ -10,13 +10,12 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(
-      `http://localhost/tracksapi/agencies/${clientid}`,
-      {
-        method: "DELETE",
-        headers,
-      }
-    );
+    const apiUrl = process.env.API_URL;
+
+    const response = await fetch(`${apiUrl}/agencies/${clientid}`, {
+      method: "DELETE",
+      headers,
+    });
 
     if (!response.ok) {
       res.status(response.status).json(await response.json());

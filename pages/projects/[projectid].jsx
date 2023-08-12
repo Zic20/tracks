@@ -158,7 +158,7 @@ export default function ProjectDetail({
         <title>{project?.Name}</title>
       </Head>
 
-      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-2 pt-6">
           <Tabs defaultValue="profile" className="space-y-4">
             <TabsList className="bg-slate-300 md:w-3/12 justify-start space-x-2">
@@ -249,7 +249,7 @@ export async function getServerSideProps({ req, res, params }) {
   const projectid = params.projectid;
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
-
+  const apiUrl = process.env.API_URL;
   if (!accessToken) {
     return {
       redirect: {
@@ -259,34 +259,28 @@ export async function getServerSideProps({ req, res, params }) {
     };
   }
 
-  const response = await fetch("http://localhost/tracksapi/agencies", {
+  const response = await fetch(`${apiUrl}/agencies`, {
     mode: "no-cors",
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
-  const projectResponse = await fetch(
-    `http://localhost/tracksapi/projects/${projectid}`,
-    {
-      mode: "no-cors",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const projectResponse = await fetch(`${apiUrl}/projects/${projectid}`, {
+    mode: "no-cors",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-  const teamResponse = await fetch(
-    `http://localhost/tracksapi/teams?project=${projectid}`,
-    {
-      mode: "no-cors",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const teamResponse = await fetch(`${apiUrl}/teams?project=${projectid}`, {
+    mode: "no-cors",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-  const staffListResponse = await fetch(`http://localhost/tracksapi/staff`, {
+  const staffListResponse = await fetch(`${apiUrl}/staff`, {
     mode: "no-cors",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -294,7 +288,7 @@ export async function getServerSideProps({ req, res, params }) {
   });
 
   const tasksResponse = await fetch(
-    `http://localhost/tracksapi/projectstasks?project=${projectid}`,
+    `${apiUrl}/projectstasks?project=${projectid}`,
     {
       mode: "no-cors",
       headers: {

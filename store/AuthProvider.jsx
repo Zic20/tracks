@@ -25,8 +25,6 @@ const AuthProvider = (props) => {
     }
   }, []);
 
-  
-
   if (!hasToken && !refreshToken) {
     logoutHandler();
   }
@@ -36,6 +34,8 @@ const AuthProvider = (props) => {
     setRefreshToken(data["refresh_token"]);
     localStorage.setItem("access", data["access_token"]);
     localStorage.setItem("refresh", data["refresh_token"]);
+    const tokenData = jwt_decode(data["access_token"]);
+    setUser(tokenData);
     setHasToken(true);
   };
 

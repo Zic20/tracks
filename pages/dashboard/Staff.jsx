@@ -49,11 +49,11 @@ export default function Staff({ data }) {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-white min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
           {/* <DatePickerWithRange /> */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Ongoing Projects
@@ -66,7 +66,7 @@ export default function Staff({ data }) {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Completed Projects
@@ -79,7 +79,7 @@ export default function Staff({ data }) {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Teams</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
@@ -90,7 +90,7 @@ export default function Staff({ data }) {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Activities
@@ -104,7 +104,7 @@ export default function Staff({ data }) {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-            <Card className="col-span-6 sm:w-full">
+            <Card className="col-span-6 sm:w-full bg-white">
               <CardHeader>
                 <CardTitle>Recent Activities</CardTitle>
               </CardHeader>
@@ -113,7 +113,7 @@ export default function Staff({ data }) {
               </CardContent>
             </Card>
 
-            <Card className="col-span-6 w-full">
+            <Card className="col-span-6 w-full bg-white">
               <CardHeader>
                 <CardTitle>Pending Tasks</CardTitle>
                 <CardDescription>
@@ -134,6 +134,7 @@ export default function Staff({ data }) {
 export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
+  const apiUrl = process.env.API_URL;
 
   if (!accessToken) {
     return {
@@ -145,7 +146,7 @@ export async function getServerSideProps({ req, res }) {
   }
 
   const response = await fetch(
-    "http://localhost/tracksapi/staffreports?dashboard&startdate=2023-06-01&enddate=2023-07-31",
+    `${apiUrl}/staffreports?dashboard&startdate=2023-06-01&enddate=2023-07-31`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

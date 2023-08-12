@@ -1,6 +1,7 @@
 import Cookies from "cookies";
 
 export default async function handler(req, res) {
+  const apiUrl = process.env.API_URL;
   if (req.method === "PATCH") {
     const { taskid } = req.query;
     const cookies = new Cookies(req, res);
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
     headers.append("Authorization", `Bearer ${accessToken}`);
 
     const response = await fetch(
-      `http://localhost/tracksapi/projectstasks/${taskid}`,
+      `${apiUrl}/projectstasks/${taskid}`,
       {
         method: "PATCH",
         headers,
@@ -36,7 +37,7 @@ export default async function handler(req, res) {
     headers.append("Authorization", `Bearer ${accessToken}`);
 
     const response = await fetch(
-      `http://localhost/tracksapi/projectstasks/${taskid}`,
+      `${apiUrl}/projectstasks/${taskid}`,
       {
         method: "DELETE",
         headers,

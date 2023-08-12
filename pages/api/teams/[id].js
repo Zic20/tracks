@@ -1,6 +1,7 @@
 import Cookies from "cookies";
 
 async function handler(req, res) {
+  const apiUrl = process.env.API_URL;
   if (req.method === "PATCH") {
     const { id } = req.query;
     const cookies = new Cookies(req, res);
@@ -10,7 +11,7 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(`http://localhost/tracksapi/teams/${id}`, {
+    const response = await fetch(`${apiUrl}/teams/${id}`, {
       method: "PATCH",
       headers,
       body: req.body,
@@ -32,7 +33,7 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(`http://localhost/tracksapi/teams/${id}`, {
+    const response = await fetch(`${apiUrl}/teams/${id}`, {
       method: "DELETE",
       headers,
     });

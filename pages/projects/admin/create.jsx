@@ -38,6 +38,7 @@ export default function Create(props) {
 export async function getServerSideProps({ req, res }) {
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
+  const apiUrl = process.env.API_URL;
 
   if (!accessToken) {
     return {
@@ -48,7 +49,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const response = await fetch("http://localhost/tracksapi/agencies", {
+  const response = await fetch(`${apiUrl}/agencies`, {
     mode: "no-cors",
     headers: {
       Authorization: `Bearer ${accessToken}`,

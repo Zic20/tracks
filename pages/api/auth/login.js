@@ -4,9 +4,11 @@ async function handler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
 
+    const apiUrl = process.env.API_URL;
+
     const headers = new Headers();
     headers.append("Content-type", "application/json");
-    const result = await fetch("http://localhost/tracksapi/login.php", {
+    const result = await fetch(`${apiUrl}/login.php`, {
       method: "POST",
       headers,
       body: data,
@@ -22,9 +24,9 @@ async function handler(req, res) {
     const accessToken = cookieData[0].toString().split("=")[1];
     const refreshToken = cookieData[1].toString().split("=")[1];
 
+    const responseData = await result.json();
     cookies.set("access", accessToken);
     cookies.set("refresh", refreshToken);
-    const responseData = await result.json();
     res.status(result.status).json(responseData);
   }
 }

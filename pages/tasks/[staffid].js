@@ -116,7 +116,7 @@ export default function StaffTasksPage({ list, agencies, activitytypes }) {
       <Head>
         <title>Tasks</title>
       </Head>
-      <div className="flex-col md:flex text-black bg-slate-200 min-h-screen">
+      <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-2 pt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-12 bg-white overflow-y-auto">
@@ -146,6 +146,8 @@ export async function getServerSideProps({ req, res }) {
   const accessToken = cookies.get("access");
   const refreshToken = cookies.get("refresh");
 
+  const apiUrl = process.env.API_URL;
+
   if (!accessToken && !refreshToken) {
     return {
       redirect: {
@@ -161,23 +163,17 @@ export async function getServerSideProps({ req, res }) {
   const headers = new Headers();
   headers.append("Content-type", "application/json");
   headers.append("Authorization", `Bearer ${accessToken}`);
-  const response = await fetch("http://localhost/tracksapi/activities", {
+  const response = await fetch(`${apiUrl}/activities`, {
     headers,
   });
 
-  const agenciesListingReq = await fetch(
-    "http://localhost/tracksapi/agencies",
-    {
-      headers,
-    }
-  );
+  const agenciesListingReq = await fetch(`${apiUrl}/agencies`, {
+    headers,
+  });
 
-  const activityTypesListingReq = await fetch(
-    "http://localhost/tracksapi/activitytypes",
-    {
-      headers,
-    }
-  );
+  const activityTypesListingReq = await fetch(`${apiUrl}/activitytypes`, {
+    headers,
+  });
 
   const [activities, agencies, activitytypes] = await Promise.all([
     response.json(),

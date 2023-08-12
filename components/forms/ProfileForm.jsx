@@ -93,7 +93,7 @@ export default function ProfileForm(props) {
       PhoneNo: phoneNo,
       Email: email,
       Supervisor: supervisor,
-      Positon: position,
+      Position: position,
     };
 
     if (!formIsValid) {

@@ -9,15 +9,13 @@ async function handler(req, res) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
+    const apiUrl = process.env.API_URL;
 
-    const response = await fetch(
-      `http://localhost/tracksapi/agencies/${clientid}`,
-      {
-        method: "PATCH",
-        headers,
-        body: req.body,
-      }
-    );
+    const response = await fetch(`${apiUrl}/agencies/${clientid}`, {
+      method: "PATCH",
+      headers,
+      body: req.body,
+    });
 
     if (!response.ok) {
       res.status(response.status).json(await response.json());
