@@ -17,7 +17,7 @@ export default function ProjectsPage({ list }) {
   const router = useRouter();
 
   function onNewProjectClickHandler() {
-    router.push("/projects/create");
+    router.push("/projects/admin/create");
   }
   return (
     <Fragment>

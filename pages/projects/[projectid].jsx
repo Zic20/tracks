@@ -67,6 +67,8 @@ export default function ProjectDetail({
   const authCtx = useContext(authContext);
   const { user } = authCtx;
 
+  console.log(clients);
+
   useEffect(() => {
     if (team.length > 0) {
       team.forEach((item) => {
@@ -316,7 +318,7 @@ export async function getServerSideProps({ req, res, params }) {
 
   return {
     props: {
-      clients: clients.status ? clients.data : [],
+      clients: clients.data ?? [],
       project: project.status ? project.data : [],
       team: team.status ? team.data : [],
       staffList: staffList,
