@@ -10,7 +10,7 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const apiUrl = process.env.API_URL;
+    const apiUrl = process.env.API_url;
 
     const response = await fetch(`${apiUrl}/agencies/${clientid}`, {
       method: "DELETE",

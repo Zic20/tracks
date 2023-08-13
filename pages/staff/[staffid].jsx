@@ -117,7 +117,7 @@ export async function getServerSideProps({ req, res, params }) {
   const staffid = params.staffid;
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
-  const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_url;
 
   if (!accessToken) {
     return {

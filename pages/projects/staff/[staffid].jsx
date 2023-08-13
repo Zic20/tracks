@@ -40,7 +40,7 @@ export async function getServerSideProps({ req, res, params: { staffid } }) {
   const cookies = new Cookies(req, res);
   const accessToken = cookies.get("access");
   const refreshToken = cookies.get("refresh");
-  const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_url;
 
   if (!accessToken && !refreshToken) {
     return {
@@ -57,12 +57,9 @@ export async function getServerSideProps({ req, res, params: { staffid } }) {
   const headers = new Headers();
   headers.append("Content-type", "application/json");
   headers.append("Authorization", `Bearer ${accessToken}`);
-  const response = await fetch(
-    `${apiUrl}/projects?staff=${staffid}`,
-    {
-      headers,
-    }
-  );
+  const response = await fetch(`${apiUrl}/projects?staff=${staffid}`, {
+    headers,
+  });
 
   if (!response.ok) {
     return {

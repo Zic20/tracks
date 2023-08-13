@@ -1,7 +1,7 @@
 import Cookies from "cookies";
 
 async function handler(req, res) {
-  const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_url;
   if (req.method === "PATCH") {
     const { id } = req.query;
     const cookies = new Cookies(req, res);

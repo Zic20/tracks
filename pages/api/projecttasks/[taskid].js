@@ -1,7 +1,7 @@
 import Cookies from "cookies";
 
 export default async function handler(req, res) {
-  const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_url;
   if (req.method === "PATCH") {
     const { taskid } = req.query;
     const cookies = new Cookies(req, res);
@@ -11,14 +11,11 @@ export default async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(
-      `${apiUrl}/projectstasks/${taskid}`,
-      {
-        method: "PATCH",
-        headers,
-        body: req.body,
-      }
-    );
+    const response = await fetch(`${apiUrl}/projectstasks/${taskid}`, {
+      method: "PATCH",
+      headers,
+      body: req.body,
+    });
     const responseData = await response.json();
 
     if (!response.ok) {
@@ -36,13 +33,10 @@ export default async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(
-      `${apiUrl}/projectstasks/${taskid}`,
-      {
-        method: "DELETE",
-        headers,
-      }
-    );
+    const response = await fetch(`${apiUrl}/projectstasks/${taskid}`, {
+      method: "DELETE",
+      headers,
+    });
 
     if (!response.ok) {
       res.status(response.status).json({ message: "Something went wrong" });

@@ -4,7 +4,7 @@ async function handler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
 
-    const apiUrl = process.env.API_URL;
+    const apiUrl = process.env.API_url;
 
     const headers = new Headers();
     headers.append("Content-type", "application/json");

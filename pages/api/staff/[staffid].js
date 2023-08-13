@@ -5,7 +5,7 @@ async function handler(req, res) {
     const { staffid } = req.query;
     const cookies = new Cookies(req, res);
     const accessToken = cookies.get("access");
-    const apiUrl = process.env.API_URL;
+    const apiUrl = process.env.API_url;
 
     const headers = new Headers();
     headers.append("Content-Type", "application/json");

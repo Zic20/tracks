@@ -88,7 +88,7 @@ function Login() {
       cookieCutter.set("refresh", responseData["refresh_token"]);
       router.replace("/dashboard");
     } else {
-      // const responseData = await response.json();
+      
       toast({
         variant: "destructive",
         title: "Invalid credentials",
