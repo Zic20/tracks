@@ -67,7 +67,6 @@ export default function ProjectDetail({
   const authCtx = useContext(authContext);
   const { user } = authCtx;
 
-  console.log(clients);
 
   useEffect(() => {
     if (team.length > 0) {

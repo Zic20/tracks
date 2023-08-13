@@ -167,8 +167,6 @@ export async function getServerSideProps({ req, res }) {
     headers,
   });
 
-  console.log(`${apiUrl}/activities`);
-
   const agenciesListingReq = await fetch(`${apiUrl}/agencies`, {
     headers,
   });

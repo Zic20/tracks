@@ -80,7 +80,6 @@ export async function getServerSideProps({ req, res }) {
   }
 
   const responseData = await response.json();
-  console.log(responseData);
 
   return {
     props: {
