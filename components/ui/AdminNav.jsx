@@ -36,12 +36,12 @@ export default function AdminNav({ className, ...props }) {
             Projects
           </Link>
 
-          <Link
+          {/* <Link
             href="/examples/dashboard"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Reports
-          </Link>
+          </Link> */}
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           <UserNav />
