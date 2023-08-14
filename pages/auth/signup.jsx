@@ -4,8 +4,8 @@ import logo from "../../images/Logo.png";
 
 function Signup() {
   return (
-    <div className="flex min-h-screen justify-center align-middle bg-slate-100">
-      <div className="bg-white shadow-ld w-2/6 p-5 text-center text-black rounded-lg my-auto">
+    <div className="min-h-screen flex justify-center align-middle bg-slate-200">
+      <div className="bg-white shadow-ld md:w-2/6 p-5 text-center text-black rounded-lg my-auto">
         <Image
           src={logo}
           width="50"
