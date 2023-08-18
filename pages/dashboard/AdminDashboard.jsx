@@ -14,6 +14,7 @@ import { PendingTasks } from "@/components/RecentActivities";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDateString } from "@/modules/timecalculation";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 export const metadata = {
   title: "Dashboard",
@@ -21,6 +22,7 @@ export const metadata = {
 };
 
 export default function AdminDashboard({ data }) {
+  const [taskList, setTaskList] = useState([]);
   const { projects, staff, tasks, clients } = data;
   const ongoingProjects = projects.filter(
     (project) => project.Status === "In Progress"
@@ -30,19 +32,36 @@ export default function AdminDashboard({ data }) {
     (project) => project.Status === "Completed"
   );
 
-  const pendingTasks = tasks.filter(
-    (task) => task.Status === "Not Started" || task.Status === "In Progress"
-  );
+  const formatedTask = tasks
+    .filter(
+      (task) => task.Status === "Not Started" || task.Status === "In Progress"
+    )
+    .sort((a, b) => {
+      return dayjs(a.Deadline).diff(dayjs(b.Deadline));
+    })
+    .filter((task) => {
+      return dayjs(task.Deadline).diff(dayjs(), "day") >= -30;
+    })
+    .map((task) => {
+      const date = dayjs(task.Deadline).diff(dayjs(), "day");
 
-  const formatedTask = pendingTasks.map((task, index) => {
-    const date = dayjs(task.Deadline).diff(dayjs(), "day");
-    return {
-      id: task.id,
-      title: `${task.Task} (${task.ProjectName})`,
-      date: task.StartDate,
-      deadline: date > 0 ? `Due in ${date} days` : "Overdue",
-    };
-  });
+      return {
+        id: task.id,
+        title: `${task.Task} (${task.ProjectName})`,
+        date: task.StartDate,
+
+        deadline:
+          date > 0
+            ? `Due in ${date} day${date > 1 ? "s" : ""}`
+            : date === 0
+            ? "Today"
+            : "Overdue",
+      };
+    });
+
+  useEffect(() => {
+    setTaskList(formatedTask);
+  }, [formatedTask]);
 
   return (
     <>

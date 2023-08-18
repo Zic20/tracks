@@ -217,7 +217,7 @@ export default function ProjectsForm({
       <div className="w-full md:flex md:space-x-2">
         <div className="md:w-6/12 mb-2">
           <label htmlFor="" className="mb-2">
-            Client
+            Project Owner
           </label>
           <Select
             onValueChange={onClientChangeHandler}

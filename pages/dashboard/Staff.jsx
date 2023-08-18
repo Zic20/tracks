@@ -40,7 +40,8 @@ export default function Staff({ data }) {
       id: task.TaskID,
       title: `${task.Task} (${task.ProjectName})`,
       date: task.StartDate,
-      deadline: date > 0 ? `Due in ${date} days` : "Overdue",
+      deadline:
+        date > 0 ? `Due in ${date} days` : date === 0 ? "Today" : "Overdue",
     };
   });
 
