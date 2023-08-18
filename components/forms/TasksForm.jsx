@@ -9,7 +9,6 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useToast } from "../ui/use-toast";
-import { CheckCircleIcon } from "lucide-react";
 
 const TasksForm = ({
   project,
@@ -185,7 +184,7 @@ const TasksForm = ({
           <Select
             className="bg-dark mt-2 w-full"
             onValueChange={priorityChangeHandler}
-            defaultValue={`${task?.Priority}`}
+            defaultValue={task ?? `${task?.Priority}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Priority" />
@@ -227,20 +226,26 @@ const TasksForm = ({
           <Select
             className="bg-dark mt-2 w-full"
             onValueChange={subtaskChangeHandler}
-            defaultValue={`${task?.Parent}`}
+            // defaultValue={`${task?.Parent}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="" />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              {projectTasks.map((task) => {
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value=""
+              >
+                {""}
+              </SelectItem>
+              {projectTasks.map((projectTask) => {
                 return (
                   <SelectItem
-                    key={task.id}
+                    key={projectTask.id}
                     className="text-black hover:bg-slate-400 bg-white"
-                    value={`${task.id}`}
+                    value={`${+projectTask.id}`}
                   >
-                    {task.Task}
+                    {projectTask.Task}
                   </SelectItem>
                 );
               })}
