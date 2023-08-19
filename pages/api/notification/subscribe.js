@@ -10,25 +10,18 @@ async function handler(req, res) {
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", `Bearer ${accessToken}`);
 
-    const response = await fetch(`${apiUrl}/projectstasks`, {
+    const response = await fetch(`${apiUrl}/subscribe`, {
       method: "POST",
-      mode: "no-cors",
       headers,
-      body: req.body,
+      body: JSON.stringify(req.body),
     });
 
-    console.log(response.text());
-    const responseData = await response.json();
-
     if (!response.ok) {
-      res.status(response.status).json({
-        message: responseData.message
-          ? responseData.message
-          : "Something went wrong",
-      });
+      res.status(response.status).json(await response.json());
       return;
     }
 
+    const responseData = await response.json();
     res.status(response.status).json(responseData);
   } else {
     res.status(405).json({ message: "Method not allowed" });
