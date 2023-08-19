@@ -94,7 +94,6 @@ export default function ProjectDetail({
 
   // Adds the new team member to the team state
   function onTeamFormSubmitHandler(data, action) {
-    console.log(data);
     if (action === "add") {
       dispatch({ type: "ADD", payload: data });
     } else if (action === "update") {
