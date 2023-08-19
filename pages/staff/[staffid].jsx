@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProfileForm from "@/components/forms/ProfileForm";
 import Cookies from "cookies";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,7 +13,13 @@ export const metadata = {
 };
 
 export default function MemberProfilePage({ stafflist, staff }) {
+  const [list, setList] = useState([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setList(stafflist.filter((item) => +item.id !== +staff.id));
+  }, [stafflist, staff]);
+
   async function onFormSubmitHandler(data) {
     const response = await fetch(`/api/staff/${staff.id}`, {
       method: "PATCH",
@@ -64,7 +70,7 @@ export default function MemberProfilePage({ stafflist, staff }) {
                     <ProfileForm
                       className="col-span-2"
                       method="UPDATE"
-                      stafflist={stafflist}
+                      stafflist={list}
                       staff={staff}
                       onSubmit={onFormSubmitHandler}
                     />
@@ -158,8 +164,8 @@ export async function getServerSideProps({ req, res, params }) {
 
   return {
     props: {
-      stafflist,
-      staff,
+      stafflist: stafflist || [],
+      staff: staff || {},
     },
   };
 }
