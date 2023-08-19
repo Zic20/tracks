@@ -1,11 +1,12 @@
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import ProfileForm from "@/components/forms/ProfileForm";
 import Cookies from "cookies";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
+import authContext from "@/store/auth-context";
 
 export const metadata = {
   title: "Staff",
@@ -14,6 +15,8 @@ export const metadata = {
 
 export default function MemberProfilePage({ stafflist, staff }) {
   const [list, setList] = useState([]);
+  const authCtx = useContext(authContext);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -56,9 +59,12 @@ export default function MemberProfilePage({ stafflist, staff }) {
               <TabsTrigger className="w-6/12 focus:bg-white" value="profile">
                 Profile
               </TabsTrigger>
-              <TabsTrigger className="w-6/12 focus:bg-white" value="security">
-                Security
-              </TabsTrigger>
+
+              {authCtx.user.usertype === "Staff" && (
+                <TabsTrigger className="w-6/12 focus:bg-white" value="security">
+                  Security
+                </TabsTrigger>
+              )}
             </TabsList>
             <TabsContent value="profile" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
