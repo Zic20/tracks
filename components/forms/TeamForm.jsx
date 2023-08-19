@@ -59,7 +59,7 @@ const TeamForm = ({
 
     if (method === "POST") {
       const data = {
-        Staff: selectedStaff,
+        Staff: +selectedStaff,
         Role: selectedRole,
         Project: project,
       };
@@ -122,6 +122,7 @@ const TeamForm = ({
       });
 
       data.id = member.id;
+      data.Staff = member.Staff;
       data.StaffName = member.StaffName;
       onSubmit(data, "update");
     }

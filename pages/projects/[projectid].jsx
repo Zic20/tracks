@@ -12,7 +12,7 @@ import Cookies from "cookies";
 import { CheckCircle2Icon } from "lucide-react";
 import Head from "next/head";
 import { Fragment, useEffect, useReducer } from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import authContext from "@/store/auth-context";
 import TasksForm from "@/components/forms/TasksForm";
 import SideSheet from "@/components/SideSheet";
@@ -64,10 +64,11 @@ export default function ProjectDetail({
 }) {
   const [teamState, dispatch] = useReducer(teamReducer, []);
   const [tasksState, dispatchTasks] = useReducer(tasksReducer, []);
+  const [list, setList] = useState([]);
   const authCtx = useContext(authContext);
   const { user } = authCtx;
 
-
+  // Adds the team members to the team state
   useEffect(() => {
     if (team.length > 0) {
       team.forEach((item) => {
@@ -76,6 +77,13 @@ export default function ProjectDetail({
     }
   }, [team]);
 
+  // Removes the team members from the staff list
+  useEffect(() => {
+    const membersIds = teamState.map((item) => item.Staff);
+    setList(staffList.filter((item) => !membersIds.includes(item.id)));
+  }, [teamState, staffList]);
+
+  // Adds the tasks to the tasks state
   useEffect(() => {
     if (tasks.length > 0) {
       tasks.forEach((item) => {
@@ -84,6 +92,17 @@ export default function ProjectDetail({
     }
   }, [tasks]);
 
+  // Adds the new team member to the team state
+  function onTeamFormSubmitHandler(data, action) {
+    console.log(data);
+    if (action === "add") {
+      dispatch({ type: "ADD", payload: data });
+    } else if (action === "update") {
+      dispatch({ type: "UPDATE", payload: data });
+    }
+  }
+
+  // Handles the form submission for tasks
   function onFormSubmitHandler(data, action) {
     if (action === "add") {
       dispatchTasks({ type: "ADD", payload: data });
@@ -93,6 +112,7 @@ export default function ProjectDetail({
   }
   const { toast } = useToast();
 
+  // Handles delete for team members
   async function handleTeamDelete(id) {
     const res = await fetch(`/api/teams/${id}`, {
       method: "DELETE",
@@ -117,6 +137,7 @@ export default function ProjectDetail({
     }
   }
 
+  // Handles delete for tasks
   async function handleTaskDelete(id) {
     const response = await fetch(`/api/projecttasks/${id}`, {
       method: "DELETE",
@@ -200,9 +221,9 @@ export default function ProjectDetail({
                     {user?.usertype === "Admin" && (
                       <MyDialog title={"New member"}>
                         <TeamForm
-                          stafflist={staffList}
+                          stafflist={list}
                           project={project.id}
-                          onSubmit={onFormSubmitHandler}
+                          onSubmit={onTeamFormSubmitHandler}
                         />
                       </MyDialog>
                     )}
@@ -227,7 +248,7 @@ export default function ProjectDetail({
                         <TasksForm
                           project={project.id}
                           onSubmit={onFormSubmitHandler}
-                          stafflist={team}
+                          stafflist={teamState}
                           projectTasks={tasksState}
                         />
                       </SideSheet>
