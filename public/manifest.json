@@ -1,0 +1,62 @@
+{
+  "name": "Tracks - Time Management App",
+  "short_name": "Tracks",
+  "domain": "trackss.vercel.app",
+  "url": "https://trackss.vercel.app",
+  "start_url": "/",
+  "scope": "/",
+  "description": "Tracks is a simple app to track your employees work and projects.",
+  "image": "/images/Logo.png",
+  "keywords": "tracks, track, work, projects, employees, employee, time, management, project, task, tasks, time management, time tracking, time tracker, time track, time tracks, time management app, time management apps, time management software, time management tool, time management tools, time management system, time management systems, time management website, time management websites, time management web app, time management web apps, time management web application, time management web applications, time management web tool, time management web tools, time management web site, time management web sites, time management webtool, time management webtools, time management webapp, time management webapps, time management webapplication, time management webapplications, time management web site, time management web sites, time management webtool, time management webtools, time management webapp, time management webapps, time management webapplication, time management webapplications",
+  "author": "Tracks",
+  "theme_color": "#11111Fff",
+  "background_color": "#FFFFFF",
+  "dir": "ltr",
+  "lang": "en-US",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/Icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "splash": {
+    "image": "/images/Icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  },
+
+  "shortcut": [
+    {
+      "name": "Tracks",
+      "description": "Tracks is a simple app to track your employees work and projects.",
+      "url": "https://trackss.vercel.app",
+      "icons": [
+        {
+          "src": "/images/Logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "/images/Logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "display": "standalone",
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.png",
+      "sizes": "1278x645",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/goals.png",
+      "sizes": "1265x603",
+      "type": "image/png"
+    }
+  ]
+}

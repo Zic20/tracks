@@ -42,10 +42,10 @@ export const PendingTasks = ({ tasks }) => {
             key={task.id}
             className="flex items-center last:border-b-0 border-b pb-2"
           >
-            <Avatar className="h-9 w-9" key={task.id}>
+            <Avatar className="h-9 w-9">
               <AvatarImage src={task.image} alt="Avatar" />
               <AvatarFallback>
-                {task.title[0].toUpperCase() + task.title[1].toUpperCase()}
+                {task.title.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1" key={`pending${task.id}`}>
