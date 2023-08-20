@@ -9,6 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useToast } from "../ui/use-toast";
+import styles from "./styles.module.css";
 
 const TasksForm = ({
   project,
@@ -19,6 +20,7 @@ const TasksForm = ({
   method = "POST",
 }) => {
   const [enteredTask, setEnteredTask] = useState("");
+  const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState("");
   const [subtask, setSubtask] = useState("");
@@ -49,6 +51,7 @@ const TasksForm = ({
     e.preventDefault();
     const data = {
       Task: enteredTask,
+      Description: description,
       Deadline: deadline,
       Priority: priority,
       Parent: subtask,
@@ -124,6 +127,10 @@ const TasksForm = ({
     setEnteredTask(event.target.value);
   }
 
+  function descriptionChangeHandler(event) {
+    setDescription(event.target.value);
+  }
+
   function deadlineChangeHandler(event) {
     setDeadline(event.target.value);
   }
@@ -146,7 +153,7 @@ const TasksForm = ({
 
   return (
     <form
-      className={"md:flex flex-wrap flex-col space-y-2 w-full"}
+      className={`p-3 h-full justify-center align-middle overflow-y-auto scrollbar-thumb:!rounded ${styles.activityform}`}
       onSubmit={handleSubmit}
     >
       <div className="w-full">
@@ -176,6 +183,21 @@ const TasksForm = ({
           />
         </div>
       </div>
+
+      <div>
+        <label htmlFor="description" className="mb-2">
+          Description
+        </label>
+        <textarea
+          className="mt-2 w-full border bg-black rounded-lg p-2 resize-none focus:outline focus:ring-1 focus:ring-slate-200 focus:border-transparent"
+          id="description"
+          rows="3"
+          placeholder="Description"
+          onChange={descriptionChangeHandler}
+          defaultValue={task?.Description}
+        ></textarea>
+      </div>
+
       <div className="w-full flex ">
         <div className="w-full">
           <label htmlFor="" className="mb-2">
@@ -323,7 +345,7 @@ const TasksForm = ({
 
       <Button
         variant="default"
-        className="bg-white text-black disabled:bg-slate-400 w-full mt-5"
+        className="bg-white text-black disabled:bg-slate-400 w-full mt-5 mb-2"
         onClick={handleSubmit}
         disabled={!formIsValid}
       >
