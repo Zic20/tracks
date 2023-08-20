@@ -123,7 +123,7 @@ export const tasksColumns = (
           }
           return (
             <div className="flex gap-2">
-              <SideSheet triggerTitle="Edit" title="Edit goal">
+              <SideSheet triggerTitle="Edit" title="Edit Task">
                 <TasksForm
                   projectTasks={projectTasks}
                   stafflist={stafflist}
