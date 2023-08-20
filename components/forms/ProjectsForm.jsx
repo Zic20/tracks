@@ -9,6 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
+import { set } from "date-fns";
 
 export default function ProjectsForm({
   clients,
@@ -22,6 +23,7 @@ export default function ProjectsForm({
   const [deadline, setDeadline] = useState("");
   const [type, setType] = useState("");
   const [client, setClient] = useState(null);
+  const [description, setDescription] = useState("");
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export default function ProjectsForm({
       setDeadline(project?.Deadline);
       setType(project?.Type);
       setClient(project?.Client);
+      setDescription(project?.Description);
     }
   }, [project]);
 
@@ -50,6 +53,10 @@ export default function ProjectsForm({
 
   function onNameChangeHandler(event) {
     setName(event.target.value);
+  }
+
+  function onDescriptionChangeHandler(event) {
+    setDescription(event.target.value);
   }
 
   function onStartDateChangeHandler(event) {
@@ -76,6 +83,7 @@ export default function ProjectsForm({
       Deadline: deadline,
       Type: type,
       Client: client,
+      Description: description,
     };
 
     if (!formIsValid) {
@@ -171,6 +179,19 @@ export default function ProjectsForm({
             onChange={onStartDateChangeHandler}
           />
         </div>
+      </div>
+      <div className="w-full">
+        <label htmlFor="description" className="mb-2">
+          Description
+        </label>
+        <textarea
+          className="mt-2 w-full border rounded-lg p-2 bg-dark resize-none focus:outline focus:ring-1 focus:ring-slate-200 focus:border-transparent"
+          id="description"
+          rows="5"
+          placeholder="Description"
+          onChange={onDescriptionChangeHandler}
+          defaultValue={project?.Description}
+        ></textarea>
       </div>
       <div className="w-full md:flex md:space-x-2">
         <div className="md:w-6/12 mb-2">
