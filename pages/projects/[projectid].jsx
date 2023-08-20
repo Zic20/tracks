@@ -228,7 +228,11 @@ export default function ProjectDetail({
                     )}
                   </CardHeader>
                   <CardContent className="pl-3">
-                    <DataTable columns={columns} data={teamState} />
+                    <DataTable
+                      columns={columns}
+                      data={teamState}
+                      searchColumn="StaffName"
+                    />
                   </CardContent>
                 </Card>
               </div>
@@ -254,7 +258,11 @@ export default function ProjectDetail({
                     )}
                   </CardHeader>
                   <CardContent className="pl-3">
-                    <DataTable columns={taskColumns} data={tasksState} />
+                    <DataTable
+                      columns={taskColumns}
+                      data={tasksState}
+                      searchColumn="Task"
+                    />
                   </CardContent>
                 </Card>
               </div>

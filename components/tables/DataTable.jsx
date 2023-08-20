@@ -21,11 +21,10 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
 import { useState } from "react";
 import { DataTableToolbar } from "./DataTableToolbar";
 
-export function DataTable({ columns, data, searchColumn }) {
+export function DataTable({ columns, data, searchColumn = "" }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const table = useReactTable({

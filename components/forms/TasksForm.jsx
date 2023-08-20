@@ -200,10 +200,11 @@ const TasksForm = ({
 
       <div className="w-full flex ">
         <div className="w-full">
-          <label htmlFor="" className="mb-2">
+          <label htmlFor="priority" className="mb-2">
             Priority
           </label>
           <Select
+            id="priority"
             className="bg-dark mt-2 w-full"
             onValueChange={priorityChangeHandler}
             defaultValue={task ?? `${task?.Priority}`}
@@ -242,13 +243,14 @@ const TasksForm = ({
       </div>
       <div className="w-full flex ">
         <div className="w-full">
-          <label htmlFor="" className="mb-2">
+          <label htmlFor="parent" className="mb-2">
             Sub Task Of (Optional)
           </label>
           <Select
+            id="parent"
             className="bg-dark mt-2 w-full"
             onValueChange={subtaskChangeHandler}
-            // defaultValue={`${task?.Parent}`}
+            defaultValue={`${task?.Parent}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="" />

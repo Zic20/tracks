@@ -27,7 +27,8 @@ export function DataTableToolbar({ table, columns, searchColumn }) {
         {columns &&
           columns.map((col) => {
             const accessorKey = col?.accessorKey;
-            const tableColumn = table.getColumn(accessorKey);
+            const columnId = col?.id;
+            const tableColumn = table.getColumn(columnId);
 
             if (tableColumn && col?.filterEnabled) {
               return (
