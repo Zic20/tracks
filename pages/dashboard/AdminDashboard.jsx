@@ -22,7 +22,6 @@ export const metadata = {
 };
 
 export default function AdminDashboard({ data }) {
-  const [taskList, setTaskList] = useState([]);
   const { projects, staff, tasks, clients } = data;
   const ongoingProjects = projects.filter(
     (project) => project.Status === "In Progress"
@@ -58,11 +57,6 @@ export default function AdminDashboard({ data }) {
             : "Overdue",
       };
     });
-
-  useEffect(() => {
-    setTaskList(formatedTask);
-  }, [formatedTask]);
-
   return (
     <>
       <Head>

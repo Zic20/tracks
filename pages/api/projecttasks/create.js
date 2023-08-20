@@ -17,7 +17,6 @@ async function handler(req, res) {
       body: req.body,
     });
 
-    console.log(response.text());
     const responseData = await response.json();
 
     if (!response.ok) {

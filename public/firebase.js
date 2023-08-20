@@ -33,8 +33,7 @@ const subscribeToNotification = async () => {
       },
       body: JSON.stringify(data),
     });
-    const responseData = await response.json();
-    console.log(responseData);
+    // const responseData = await response.json();
   } else {
     console.log("no token");
   }
