@@ -7,6 +7,7 @@ import Image from "next/image";
 import logo from "../../images/Logo.png";
 import Head from "next/head";
 import { useToast } from "@/components/ui/use-toast";
+import Spinner from "@/components/ui/Spinner";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -31,6 +32,8 @@ const passwordReducer = (state, action) => {
 
 function Login() {
   const [formisValid, setFormIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // the reducer below manages email state
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
     isValid: null,
@@ -73,6 +76,7 @@ function Login() {
 
   async function loginHandler(event) {
     event.preventDefault();
+    setIsLoading(true);
     const response = await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
@@ -88,7 +92,6 @@ function Login() {
       cookieCutter.set("refresh", responseData["refresh_token"]);
       router.replace("/dashboard");
     } else {
-      
       toast({
         variant: "destructive",
         title: "Invalid credentials",
@@ -96,6 +99,7 @@ function Login() {
         className: "bg-white text-black",
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -134,17 +138,18 @@ function Login() {
             <div className="flex flex-row">
               <Link
                 className="underline text-blue-600"
-                href={"/auth/requestcode"}
+                href={"/auth/passwordreset"}
               >
                 Forgot Password?
               </Link>
             </div>
 
             <button
-              className="bg-black rounded text-white p-3 w-full my-5"
-              disabled={!formisValid}
+              className="bg-black rounded text-white p-3 w-full my-5 disabled:opacity-50"
+              disabled={!formisValid || isLoading}
               onClick={loginHandler}
             >
+              {isLoading ? <Spinner /> : ""}
               Sign In
             </button>
 

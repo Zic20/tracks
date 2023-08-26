@@ -33,9 +33,6 @@ const subscribeToNotification = async () => {
       },
       body: JSON.stringify(data),
     });
-    // const responseData = await response.json();
-  } else {
-    console.log("no token");
   }
 };
 
@@ -47,9 +44,5 @@ export async function requestNotificationPermission() {
   const permission = await Notification.requestPermission();
   if (permission === "granted") {
     subscribeToNotification();
-  } else {
-    console.log("Unable to get permission to notify.");
   }
 }
-
-// export { subscribeToNotification };
