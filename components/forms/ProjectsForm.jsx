@@ -263,6 +263,40 @@ export default function ProjectsForm({
             </SelectContent>
           </Select>
         </div>
+        <div className="md:w-6/12 mb-2">
+          <label htmlFor="" className="mb-2">
+            Project Status
+          </label>
+          <Select
+            onValueChange={onClientChangeHandler}
+            className="bg-dark mt-2 w-full"
+            defaultValue={`${project?.Client}`}
+          >
+            <SelectTrigger className="mt-2 ">
+              <SelectValue placeholder="Select project client" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value="Not Started"
+              >
+                Not Started
+              </SelectItem>
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value="Ongoing"
+              >
+                Ongoing
+              </SelectItem>
+              <SelectItem
+                className="text-black hover:bg-slate-400 bg-white"
+                value="Completed"
+              >
+                Completed
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {editable && (
