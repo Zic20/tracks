@@ -24,6 +24,7 @@ export default function ProjectsForm({
   const [type, setType] = useState("");
   const [client, setClient] = useState(null);
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
@@ -74,6 +75,10 @@ export default function ProjectsForm({
     setClient(value);
   }
 
+  function onStatusChangeHandler(value) {
+    setStatus(value);
+  }
+
   async function onSubmitHandler(event) {
     event.preventDefault();
 
@@ -84,6 +89,7 @@ export default function ProjectsForm({
       Type: type,
       Client: client,
       Description: description,
+      Status: status,
     };
 
     if (!formIsValid) {
@@ -268,9 +274,9 @@ export default function ProjectsForm({
             Project Status
           </label>
           <Select
-            onValueChange={onClientChangeHandler}
+            onValueChange={onStatusChangeHandler}
             className="bg-dark mt-2 w-full"
-            defaultValue={`${project?.Client}`}
+            defaultValue={`${project?.Status}`}
           >
             <SelectTrigger className="mt-2 ">
               <SelectValue placeholder="Select project client" />
