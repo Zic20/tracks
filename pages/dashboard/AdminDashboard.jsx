@@ -24,7 +24,7 @@ export const metadata = {
 export default function AdminDashboard({ data }) {
   const { projects, staff, tasks, clients } = data;
   const ongoingProjects = projects.filter(
-    (project) => project.Status === "In Progress"
+    (project) => project.Status !== "Completed"
   );
 
   const completedProjects = projects.filter(
@@ -32,9 +32,7 @@ export default function AdminDashboard({ data }) {
   );
 
   const formatedTask = tasks
-    .filter(
-      (task) => task.Status === "Not Started" || task.Status === "In Progress"
-    )
+    .filter((task) => task.Status !== "Completed")
     .sort((a, b) => {
       return dayjs(a.Deadline).diff(dayjs(b.Deadline));
     })
@@ -137,7 +135,7 @@ export default function AdminDashboard({ data }) {
                           {project.Name}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Date: {getDateString(project?.Deadline)}
+                          Deadline: {getDateString(project?.Deadline)}
                         </p>
                       </div>
                     </div>
