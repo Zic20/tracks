@@ -26,6 +26,7 @@ import { DataTableToolbar } from "./DataTableToolbar";
 
 export function DataTable({ columns, data, searchColumn = "" }) {
   const [sorting, setSorting] = useState([]);
+  const [rowSelection, setRowSelection] = useState({}); // [
   const [columnFilters, setColumnFilters] = useState([]);
   const table = useReactTable({
     data,
@@ -37,7 +38,11 @@ export function DataTable({ columns, data, searchColumn = "" }) {
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      rowSelection,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.id,
   });
 
   return (

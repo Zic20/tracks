@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { UserNav } from "@/components/ui/UserNav";
+import DropMenu from "./DropMenu";
 
 export default function AdminNav({ className, ...props }) {
   return (
@@ -21,27 +22,24 @@ export default function AdminNav({ className, ...props }) {
           >
             Staff
           </Link>
-
           <Link
             href="/clients"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Clients
           </Link>
-
           <Link
             href="/projects/admin"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Projects
           </Link>
-
-          {/* <Link
-            href="/examples/dashboard"
+          <Link
+            href="/reports/admin"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Reports
-          </Link> */}
+          </Link>
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           <UserNav />

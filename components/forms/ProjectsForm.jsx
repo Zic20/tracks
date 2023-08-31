@@ -221,7 +221,7 @@ export default function ProjectsForm({
             onValueChange={onTypeChangleHandler}
             defaultValue={project?.Type}
           >
-            <SelectTrigger className="mt-2 ">
+            <SelectTrigger className="mt-2">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent className="bg-white">
