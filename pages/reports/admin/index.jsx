@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { reportColumns } from "@/components/tables/reportsColumns";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/tables/DataTable";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { PrinterIcon } from "lucide-react";
 
@@ -20,11 +20,30 @@ export const metadata = {
   description: "Reports index page",
 };
 
-export default function AdminReports({ list }) {
+export default function Reports({ list }) {
   const [staffList, setStaffList] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [reportType, setReportType] = useState("");
+  const [printEnabled, setPrintEnabled] = useState(false);
+  const startDateRef = useRef();
+  const endDateRef = useRef();
 
-  const onRowSelectionChange = async (action, data = []) => {
+  useEffect(() => {
+    if (list) {
+      const formatedList = list.map((staff) => {
+        return {
+          ...staff,
+          Name: `${staff.FirstName} ${
+            staff.MiddleName ? staff.MiddleName : ""
+          } ${staff.LastName}`,
+        };
+      });
+
+      setStaffList(formatedList);
+    }
+  }, [list]);
+
+  const onRowSelectionChange = (action, data = []) => {
     if (!data) return;
     switch (action) {
       case "add":
@@ -50,20 +69,44 @@ export default function AdminReports({ list }) {
   };
   const Columns = reportColumns(onRowSelectionChange);
 
-  useEffect(() => {
-    if (list) {
-      const formatedList = list.map((staff) => {
-        return {
-          ...staff,
-          Name: `${staff.FirstName} ${
-            staff.MiddleName ? staff.MiddleName : ""
-          } ${staff.LastName}`,
-        };
-      });
+  async function onLoadReport(event) {
+    event.preventDefault();
 
-      setStaffList(formatedList);
+    if (
+      startDateRef.current.value === "" ||
+      reportType === "" ||
+      endDateRef.current.value === "" ||
+      selectedRows.length < 1
+    ) {
+      console.log("Error");
+      return;
     }
-  }, [list]);
+
+    const data = {
+      reportType,
+      startDate: startDateRef.current.value,
+      endDate: endDateRef.current.value,
+      staffList: selectedRows,
+    };
+
+    const response = await fetch("/api/reports", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.log("Error", "Failed");
+      return;
+    }
+
+    const responseData = await response.json();
+    if (!responseData.status) {
+      console.log("Error", responseData.message);
+      return;
+    }
+
+    console.log(responseData.data);
+  }
+
   return (
     <Fragment>
       <Head>
@@ -76,12 +119,20 @@ export default function AdminReports({ list }) {
               <CardTitle>Reports</CardTitle>
             </CardHeader>
             <CardContent className="pl-3">
-              <form className="flex flex-wrap columns-4 justify-end gap-2">
+              <form
+                className="flex flex-wrap columns-4 justify-end gap-2"
+                onSubmit={onLoadReport}
+              >
                 <div className="flex-1">
                   <label htmlFor="" className="mb-2">
                     Report Type
                   </label>
-                  <Select className="bg-dark mt-2 flex-1">
+                  <Select
+                    className="bg-dark mt-2 flex-1"
+                    onValueChange={(value) => {
+                      setReportType(value);
+                    }}
+                  >
                     <SelectTrigger className="mt-2">
                       <SelectValue placeholder="Type" />
                     </SelectTrigger>
@@ -94,7 +145,7 @@ export default function AdminReports({ list }) {
                       </SelectItem>
                       <SelectItem
                         className="text-black hover:bg-slate-400 bg-white"
-                        value="Goals & Activities"
+                        value="activities"
                       >
                         Goals & Activities
                       </SelectItem>
@@ -111,6 +162,7 @@ export default function AdminReports({ list }) {
                     type="date"
                     id="start"
                     name="report-start"
+                    ref={startDateRef}
                   />
                 </div>
 
@@ -123,14 +175,12 @@ export default function AdminReports({ list }) {
                     type="date"
                     id="end"
                     name="report-end"
+                    ref={endDateRef}
                   />
                 </div>
 
                 <div className="flex-1">
-                  <Button
-                    className="bg-black text-white w-max mt-7"
-                    disabled={selectedRows.length < 1}
-                  >
+                  <Button className="bg-black text-white w-max mt-7">
                     Print
                     <PrinterIcon className="ml-2" />
                   </Button>
