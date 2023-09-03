@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDateString } from "@/modules/timecalculation";
+import { useRouter } from "next/router";
 
 const RecentActivities = ({ activities }) => {
   return (
@@ -34,13 +35,17 @@ const RecentActivities = ({ activities }) => {
 };
 
 export const PendingTasks = ({ tasks }) => {
+  const router = useRouter();
   return (
     <div className="space-y-5">
       {tasks.map((task) => {
         return (
           <div
             key={task.id}
-            className="flex items-center last:border-b-0 border-b pb-2"
+            className="flex items-center last:border-b-0 border-b pb-2 hover:text-lg"
+            onClick={() => {
+              router.push(`/projects/${task.project}`);
+            }}
           >
             <Avatar className="h-9 w-9">
               <AvatarImage src={task.image} alt="Avatar" />

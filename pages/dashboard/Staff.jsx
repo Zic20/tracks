@@ -39,6 +39,7 @@ export default function Staff({ data }) {
     return {
       id: task.TaskID,
       title: `${task.Task} (${task.ProjectName})`,
+      project: task.Project,
       date: task.StartDate,
       deadline:
         date > 0 ? `Due in ${date} days` : date === 0 ? "Today" : "Overdue",
@@ -52,7 +53,6 @@ export default function Staff({ data }) {
       </Head>
       <div className="flex-col md:flex text-black bg-slate-100 min-h-screen">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          {/* <DatePickerWithRange /> */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
