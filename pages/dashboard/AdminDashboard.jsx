@@ -14,7 +14,7 @@ import { PendingTasks } from "@/components/RecentActivities";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDateString } from "@/modules/timecalculation";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 export const metadata = {
   title: "Dashboard",

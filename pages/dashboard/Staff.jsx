@@ -11,9 +11,7 @@ import {
 } from "@/components/ui/card";
 
 import RecentActivities, { PendingTasks } from "@/components/RecentActivities";
-import { Overview } from "@/components/Overview";
 import Cookies from "cookies";
-import { DatePickerWithRange } from "@/components/ui/DatePicker";
 
 export const metadata = {
   title: "Dashboard",
@@ -21,30 +19,28 @@ export const metadata = {
 };
 
 export default function Staff({ data }) {
-  const { projects, tasks, activities, goals } = data;
+  const { projects, tasks, activities } = data;
   const ongoingProjects = projects.filter(
-    (project) => project.Status === "In Progress"
+    (project) => project.Status !== "Completed"
   );
 
   const completedProjects = projects.filter(
     (project) => project.Status === "Completed"
   );
 
-  const pendingTasks = tasks.filter(
-    (task) => task.Status === "Not Started" || task.Status === "In Progress"
-  );
-
-  const formatedTask = pendingTasks.map((task) => {
-    const date = dayjs(task.Deadline).diff(dayjs(), "day");
-    return {
-      id: task.TaskID,
-      title: `${task.Task} (${task.ProjectName})`,
-      project: task.Project,
-      date: task.StartDate,
-      deadline:
-        date > 0 ? `Due in ${date} days` : date === 0 ? "Today" : "Overdue",
-    };
-  });
+  const pendingTasks = tasks
+    .filter((task) => task.Status !== "Completed")
+    .map((task) => {
+      const date = dayjs(task.Deadline).diff(dayjs(), "day");
+      return {
+        id: task.TaskID,
+        title: `${task.Task} (${task.ProjectName})`,
+        project: task.Project,
+        date: task.StartDate,
+        deadline:
+          date > 0 ? `Due in ${date} days` : date === 0 ? "Today" : "Overdue",
+      };
+    });
 
   return (
     <>
@@ -118,11 +114,11 @@ export default function Staff({ data }) {
               <CardHeader>
                 <CardTitle>Pending Tasks</CardTitle>
                 <CardDescription>
-                  You have {formatedTask.length} pending tasks.
+                  You have {pendingTasks.length} pending tasks.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PendingTasks tasks={formatedTask} />
+                <PendingTasks tasks={pendingTasks} />
               </CardContent>
             </Card>
           </div>

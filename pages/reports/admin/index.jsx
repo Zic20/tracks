@@ -1,5 +1,8 @@
-import Head from "next/head";
-import Cookies from "cookies";
+import { DataTable } from "@/components/tables/DataTable";
+import { reportColumns } from "@/components/tables/reportsColumns";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -7,13 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { reportColumns } from "@/components/tables/reportsColumns";
-import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/tables/DataTable";
-import { Fragment, useEffect, useState, useRef } from "react";
-import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import Cookies from "cookies";
 import { PrinterIcon } from "lucide-react";
+import Head from "next/head";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 export const metadata = {
   title: "Reports",
@@ -24,9 +25,11 @@ export default function Reports({ list }) {
   const [staffList, setStaffList] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [reportType, setReportType] = useState("");
-  const [printEnabled, setPrintEnabled] = useState(false);
+  // const [printEnabled, setPrintEnabled] = useState(false);
   const startDateRef = useRef();
   const endDateRef = useRef();
+
+  const { toast } = useToast();
 
   useEffect(() => {
     if (list) {
@@ -78,7 +81,12 @@ export default function Reports({ list }) {
       endDateRef.current.value === "" ||
       selectedRows.length < 1
     ) {
-      console.log("Error");
+      toast({
+        variant: "destructive",
+        title: "Invalid request",
+        description: "Please select all options",
+        className: "bg-red-500 text-white",
+      });
       return;
     }
 
@@ -94,13 +102,23 @@ export default function Reports({ list }) {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      console.log("Error", "Failed");
+      toast({
+        variant: "destructive",
+        title: "Process failed!!",
+        description: "Please try again",
+        className: "bg-red-500 text-white",
+      });
       return;
     }
 
     const responseData = await response.json();
     if (!responseData.status) {
-      console.log("Error", responseData.message);
+      toast({
+        variant: "destructive",
+        title: "Process failed!!",
+        description: "Please try again",
+        className: "bg-red-500 text-white",
+      });
       return;
     }
 
