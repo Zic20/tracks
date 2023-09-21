@@ -25,11 +25,10 @@ export default async function handler(req, res) {
   });
 
   const responseData = await response.json();
-  console.log(responseData);
   if (!response.ok) {
-    res
-      .status(response.status)
-      .json({ message: responseData.message ?? response.statusText });
+    res.status(response.status).json({
+      message: responseData.message || response.statusText,
+    });
     return;
   }
 

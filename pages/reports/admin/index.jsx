@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import Cookies from "cookies";
-import { PrinterIcon } from "lucide-react";
+import { EyeIcon, PrinterIcon } from "lucide-react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 
 export const metadata = {
@@ -25,10 +26,10 @@ export default function Reports({ list }) {
   const [staffList, setStaffList] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [reportType, setReportType] = useState("");
-  // const [printEnabled, setPrintEnabled] = useState(false);
   const startDateRef = useRef();
   const endDateRef = useRef();
 
+  const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -111,18 +112,13 @@ export default function Reports({ list }) {
       return;
     }
 
-    const responseData = await response.json();
-    if (!responseData.status) {
-      toast({
-        variant: "destructive",
-        title: "Process failed!!",
-        description: "Please try again",
-        className: "bg-red-500 text-white",
+    const report = await response.json();
+    if (report.status) {
+      router.push({
+        pathname: "/reports/admin/preview",
+        query: { reporturl: report.url },
       });
-      return;
     }
-
-    console.log(responseData.data);
   }
 
   return (
@@ -199,8 +195,8 @@ export default function Reports({ list }) {
 
                 <div className="flex-1">
                   <Button className="bg-black text-white w-max mt-7">
-                    Print
-                    <PrinterIcon className="ml-2" />
+                    Preview &nbsp;
+                    <EyeIcon />
                   </Button>
                 </div>
               </form>
