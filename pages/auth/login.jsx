@@ -8,6 +8,7 @@ import logo from "../../images/Logo.png";
 import Head from "next/head";
 import { useToast } from "@/components/ui/use-toast";
 import Spinner from "@/components/ui/Spinner";
+import jwt_decode from "jwt-decode";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -33,12 +34,10 @@ const passwordReducer = (state, action) => {
 function Login() {
   const [formisValid, setFormIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // the reducer below manages email state
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
     isValid: null,
   });
-  // the reducer below manages password state
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     value: "",
     isValid: null,
@@ -90,7 +89,23 @@ function Login() {
       authCtx.login(responseData);
       cookieCutter.set("access", responseData["access_token"]);
       cookieCutter.set("refresh", responseData["refresh_token"]);
-      router.replace("/dashboard");
+      const { usertype } = jwt_decode(accessToken);
+      let route;
+      switch (usertype) {
+        case "Manager":
+          route = "/dashboard/AdminDashboard";
+          break;
+        case "Admin":
+          route = "/dashboard/AdminDashboard";
+          break;
+        case "Client":
+          route = "/issues";
+          break;
+        default:
+          route = "/dashboard/Staff";
+          break;
+      }
+      router.replace(route);
     } else {
       toast({
         variant: "destructive",

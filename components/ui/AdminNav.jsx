@@ -40,6 +40,12 @@ export default function AdminNav({ className, ...props }) {
           >
             Reports
           </Link>
+          <Link
+            href="/issues"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Issues
+          </Link>
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           <UserNav />

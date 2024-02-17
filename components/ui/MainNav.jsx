@@ -3,6 +3,7 @@ import StaffNav from "./StaffNav";
 import { useContext } from "react";
 import authContext from "@/store/auth-context";
 import { useRouter } from "next/router";
+import ClientNav from "./ClientNav";
 
 export function MainNav({ className }) {
   const router = useRouter();
@@ -16,6 +17,7 @@ export function MainNav({ className }) {
       {usertype === "Staff" && (
         <StaffNav username={name} staffid={uniqueid} userid={sub} />
       )}
+      {usertype === "Client" && <ClientNav/>}
       {usertype === "Admin" && <AdminNav />}
     </>
   );

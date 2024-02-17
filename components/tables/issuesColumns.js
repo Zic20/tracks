@@ -7,10 +7,10 @@ import TasksForm from "../forms/TasksForm";
 export const tasksColumns = (
   onDelete,
   onSubmit,
-  isAdmin,
+  usertype,
   { project, stafflist, projectTasks }
 ) => {
-  if (isAdmin) {
+  if (usertype === "Admin") {
     return [
       {
         id: "Task",
@@ -146,6 +146,8 @@ export const tasksColumns = (
         },
       },
     ];
+  } else if(usertype === "Staff"){
+    
   } else {
     return [
       {

@@ -60,6 +60,15 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
+  if (usertype === "Client") {
+    return {
+      redirect: {
+        destination: "/issues",
+        permanent: false,
+      },
+    };
+  }
+
   const response = await fetch(`${apiUrl}/adminreports`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
