@@ -1,6 +1,6 @@
 
 const UserAccessController = (user, obj,columnAccess) => {
-    const allowedColumns = columnAccess[user.role] || [];
+    const allowedColumns = columnAccess[user.usertype] || [];
     const filteredObject = {};
     if (allowedColumns.includes("*")) return obj;
     allowedColumns.forEach((element) => {

@@ -89,7 +89,7 @@ function Login() {
       authCtx.login(responseData);
       cookieCutter.set("access", responseData["access_token"]);
       cookieCutter.set("refresh", responseData["refresh_token"]);
-      const { usertype } = jwt_decode(accessToken);
+      const { usertype } = jwt_decode(responseData["access_token"]);
       let route;
       switch (usertype) {
         case "Manager":

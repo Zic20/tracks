@@ -1,59 +1,49 @@
-import { Activity, UserCircle, Users, WorkflowIcon } from "lucide-react";
 import Cookies from "cookies";
-import dayjs from "dayjs";
+import { BugIcon, CheckCheckIcon } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { PendingTasks } from "@/components/RecentActivities";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getDateString } from "@/modules/timecalculation";
+import { DataTable } from "@/components/tables/DataTable";
+import { issuesColumns } from "@/components/tables/issuesColumns";
+import UserAccessController from "@/components/utilities/UserAccessController";
+import authContext from "@/store/auth-context";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import Head from "next/head";
+import { useContext } from "react";
 
 export const metadata = {
   title: "Issues",
   description: "Issues Dashboard",
 };
 
+const columnAccess = {
+  Staff: [
+    "id",
+    "Title",
+    "status",
+    "priority",
+    "ProductName",
+    "Agency",
+    "Action",
+  ],
+  Client: ["id", "Title", "status", "created_at", "Action"],
+  Admin: ["*"],
+};
+
 export default function IssuesDashboard({ data }) {
-  const { projects, staff, tasks, clients } = data;
-  const ongoingProjects = projects.filter(
-    (project) => project.Status !== "Completed"
+  const { user } = useContext(authContext);
+  const issues = data.map((row) =>
+    UserAccessController(user, row, columnAccess)
   );
 
-  const completedProjects = projects.filter(
-    (project) => project.Status === "Completed"
+  const resolvedIssues = issues.filter((issue) => issue.Status === "Resolved");
+
+  const unresolvedIssues = issues.filter(
+    (issue) => issue.Status !== "Resolved"
   );
 
-  const formatedTask = tasks
-    .filter((task) => task.Status !== "Completed")
-    .sort((a, b) => {
-      return dayjs(a.Deadline).diff(dayjs(b.Deadline));
-    })
-    .filter((task) => {
-      return dayjs(task.Deadline).diff(dayjs(), "day") >= -30;
-    })
-    .map((task) => {
-      const date = dayjs(task.Deadline).diff(dayjs(), "day");
+  const issuesHeaders = issuesColumns(()=>{},()=>{},user?.usertype);
 
-      return {
-        id: task.id,
-        title: `${task.Task} (${task.ProjectName})`,
-        date: task.StartDate,
-
-        deadline:
-          date > 0
-            ? `Due in ${date} day${date > 1 ? "s" : ""}`
-            : date === 0
-            ? "Today"
-            : "Overdue",
-      };
-    });
   return (
     <>
       <Head>
@@ -64,70 +54,50 @@ export default function IssuesDashboard({ data }) {
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-md font-medium">
                   Reported Issues
                 </CardTitle>
-                <Users className="h-4 w-4 text-green-400" />
+                <BugIcon className="h-6 w-6 text-green-400"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{staff}</div>
+                <div className="text-2xl font-bold">{issues.length}</div>
               </CardContent>
             </Card>
             <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-md font-medium">
                   Resolved Issues
                 </CardTitle>
-                <UserCircle className="h-4 w-4 text-green-400" />
+                <CheckCheckIcon className="h-6 w-6 text-green-400"/>
+                
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {clients > 0 ? clients - 1 : clients}
+                  {resolvedIssues.length}
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-white">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-md font-medium ">
                   Unesolved Issues
                 </CardTitle>
-                <WorkflowIcon className="h-4 w-4 text-green-400" />
+                <QuestionMarkCircledIcon className="h-6 w-6 text-green-400"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{projects.length}</div>
+                <div className="text-2xl font-bold">
+                  {unresolvedIssues.length}
+                </div>
               </CardContent>
             </Card>
           </div>
 
           <Card className="w-full bg-white">
             <CardHeader>
-              <CardTitle>Ongoing Projects</CardTitle>
+              <CardTitle>Recent Issues</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
-              {ongoingProjects.map((project) => {
-                return (
-                  <div
-                    key={"pr" + project.id}
-                    className="flex items-center last:border-b-0 border-b py-2"
-                  >
-                    <Avatar className="h-9 w-9" key={"pr" + project.id}>
-                      <AvatarImage src={project.image} alt="Avatar" />
-                      <AvatarFallback>
-                        {project.Name[0].toUpperCase() +
-                          project.Name[1].toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="ml-4 space-y-1" key={`${project.id}`}>
-                      <p className="text-sm font-medium leading-none">
-                        {project.Name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        Deadline: {getDateString(project?.Deadline)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+              <DataTable columns={issuesHeaders} data={issues} />
             </CardContent>
           </Card>
         </div>
@@ -150,7 +120,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const response = await fetch(`${apiUrl}/adminreports`, {
+  const response = await fetch(`${apiUrl}/issues`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -177,3 +147,12 @@ export async function getServerSideProps({ req, res }) {
     },
   };
 }
+
+const isaac = {
+  id: 2,
+  Title: "A test issue",
+  Description:
+    "The issues reporting module of the software is not…ay to get in touch with your engineers right now.",
+  status: "Open",
+  created_at: "2024-02-03 04:37:01",
+};
