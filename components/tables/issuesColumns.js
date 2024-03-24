@@ -1,6 +1,7 @@
 import { ArrowUpDown, EyeIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { getDateString } from "@/modules/timecalculation";
+import Link from "next/link";
 
 export const issuesColumns = (usertype) => {
   return [
@@ -148,119 +149,14 @@ export const issuesColumns = (usertype) => {
       cell: ({ row }) => {
         const issue = row.original;
 
-        function goToIssue() {
-          alert(issue.id);
-        }
-
         return (
           <div className="flex gap-2">
-            <Button variant="ghost" onClick={goToIssue}>
+            <Link href={`issues/${issue.id}`}>
               <EyeIcon className="ml-2 h-6 w-6" />
-            </Button>
+            </Link>
           </div>
         );
       },
     },
   ];
-  // } else if(usertype === "Staff"){
-
-  // } else {
-  //   return [
-  //     {
-  //       id: "Task",
-  //       accessorKey: "Task",
-  //       header: ({ column }) => {
-  //         return (
-  //           <div className="text-left p-0">
-  //             Task
-  //             <Button
-  //               variant="ghost"
-  //               onClick={() =>
-  //                 column.toggleSorting(column.getIsSorted() === "asc")
-  //               }
-  //             >
-  //               <ArrowUpDown className="ml-2 h-4 w-4" />
-  //             </Button>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //     {
-  //       id: "Status",
-  //       accessorKey: "Status",
-  //       header: ({ column }) => {
-  //         return (
-  //           <div className="text-left p-0">
-  //             Status
-  //             <Button
-  //               variant="ghost"
-  //               onClick={() =>
-  //                 column.toggleSorting(column.getIsSorted() === "asc")
-  //               }
-  //             >
-  //               <ArrowUpDown className="ml-2 h-4 w-4" />
-  //             </Button>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //     {
-  //       id: "Priority",
-  //       accessorKey: "Priority",
-  //       header: ({ column }) => {
-  //         return (
-  //           <div className="text-left p-0">
-  //             Priority
-  //             <Button
-  //               variant="ghost"
-  //               onClick={() =>
-  //                 column.toggleSorting(column.getIsSorted() === "asc")
-  //               }
-  //             >
-  //               <ArrowUpDown className="ml-2 h-4 w-4" />
-  //             </Button>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //     {
-  //       id: "Deadline",
-  //       accessorKey: "Deadline",
-  //       header: ({ column }) => {
-  //         return (
-  //           <div className="text-left p-0">
-  //             Due Date
-  //             <Button
-  //               variant="ghost"
-  //               onClick={() =>
-  //                 column.toggleSorting(column.getIsSorted() === "asc")
-  //               }
-  //             >
-  //               <ArrowUpDown className="ml-2 h-4 w-4" />
-  //             </Button>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //     {
-  //       id: "StaffName",
-  //       accessorKey: "StaffName",
-  //       header: ({ column }) => {
-  //         return (
-  //           <div className="text-left p-0">
-  //             Assigned To
-  //             <Button
-  //               variant="ghost"
-  //               onClick={() =>
-  //                 column.toggleSorting(column.getIsSorted() === "asc")
-  //               }
-  //             >
-  //               <ArrowUpDown className="ml-2 h-4 w-4" />
-  //             </Button>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //   ];
-  // }
 };

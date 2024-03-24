@@ -42,7 +42,7 @@ export default function IssuesDashboard({ data }) {
     (issue) => issue.Status !== "Resolved"
   );
 
-  const issuesHeaders = issuesColumns(()=>{},()=>{},user?.usertype);
+  const issuesHeaders = issuesColumns(user?.usertype);
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function IssuesDashboard({ data }) {
                 <CardTitle className="text-md font-medium">
                   Reported Issues
                 </CardTitle>
-                <BugIcon className="h-6 w-6 text-green-400"/>
+                <BugIcon className="h-6 w-6 text-green-400" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{issues.length}</div>
@@ -68,8 +68,7 @@ export default function IssuesDashboard({ data }) {
                 <CardTitle className="text-md font-medium">
                   Resolved Issues
                 </CardTitle>
-                <CheckCheckIcon className="h-6 w-6 text-green-400"/>
-                
+                <CheckCheckIcon className="h-6 w-6 text-green-400" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
@@ -82,7 +81,7 @@ export default function IssuesDashboard({ data }) {
                 <CardTitle className="text-md font-medium ">
                   Unesolved Issues
                 </CardTitle>
-                <QuestionMarkCircledIcon className="h-6 w-6 text-green-400"/>
+                <QuestionMarkCircledIcon className="h-6 w-6 text-green-400" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
@@ -129,12 +128,7 @@ export async function getServerSideProps({ req, res }) {
   if (!response.ok) {
     return {
       props: {
-        data: {
-          projects: [],
-          staff: 0,
-          tasks: [],
-          clients: 0,
-        },
+        data: [],
       },
     };
   }
@@ -147,12 +141,3 @@ export async function getServerSideProps({ req, res }) {
     },
   };
 }
-
-const isaac = {
-  id: 2,
-  Title: "A test issue",
-  Description:
-    "The issues reporting module of the software is not…ay to get in touch with your engineers right now.",
-  status: "Open",
-  created_at: "2024-02-03 04:37:01",
-};
